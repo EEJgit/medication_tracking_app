@@ -2,6 +2,8 @@
 
 import 'dart:math';
 
+import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:medication_tracking_app/common/convert_time.dart';
@@ -94,6 +96,35 @@ class _NewEntryPageState extends State<NewEntryPage> {
         milliseconds: 2000,
       ),
     ));
+  }
+
+//This is the firebase connection code
+
+// Function to add medication to Firestore
+  Future<void> addMedicationToFirestore(Medicine medicine) async {
+    FirebaseFirestore firestore = FirebaseFirestore.instance;
+    final currentUser = FirebaseAuth.instance.currentUser;
+
+    if (currentUser != null) {
+      final userId = currentUser.uid;
+
+      // Define the medication data
+      Map<String, dynamic> medicationData = {
+        'medicineName': medicine.medicineName,
+        'medicineType': medicine.medicineType,
+        'dosage': medicine.dosage,
+        'interval': medicine.interval,
+        'startTime': medicine.startTime,
+        // Add other fields as needed
+      };
+
+      // Reference to the "medication" collection for the current user
+      CollectionReference medicationCollection =
+          firestore.collection('users').doc(userId).collection('medication');
+
+      // Add a new document with a unique ID
+      await medicationCollection.add(medicationData);
+    }
   }
 
   @override
@@ -205,6 +236,11 @@ class _NewEntryPageState extends State<NewEntryPage> {
 
                       //medication validation
 
+                      //firebase connection
+
+                      //TODO: fix the send medication to firebase
+                      // Save the medication data to Firestore
+                      //addMedicationToFirestore(newEntryMedicine);
                       // Handle the functionality of the confirm button here.
                       String? medicationName;
                       int? dosage;
