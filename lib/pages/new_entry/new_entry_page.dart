@@ -1,7 +1,6 @@
 // ignore_for_file: prefer_const_constructors
 
 import 'dart:math';
-
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
@@ -72,7 +71,7 @@ class _NewEntryPageState extends State<NewEntryPage> {
         case ErrorEntry.dosage:
           displayError("Please Enter the required med");
           break;
-        
+
         case ErrorEntry.interval:
           displayError("Please enter the required Interval!");
           break;
@@ -85,7 +84,6 @@ class _NewEntryPageState extends State<NewEntryPage> {
       }
     });
   }
-
 
   //TODO: this displays the error to the screen
   void displayError(String error) {
@@ -100,33 +98,7 @@ class _NewEntryPageState extends State<NewEntryPage> {
 
 //This is the firebase connection code
 
-// Function to add medication to Firestore
-  Future<void> addMedicationToFirestore(Medicine medicine) async {
-    FirebaseFirestore firestore = FirebaseFirestore.instance;
-    final currentUser = FirebaseAuth.instance.currentUser;
-
-    if (currentUser != null) {
-      final userId = currentUser.uid;
-
-      // Define the medication data
-      Map<String, dynamic> medicationData = {
-        'medicineName': medicine.medicineName,
-        'medicineType': medicine.medicineType,
-        'dosage': medicine.dosage,
-        'interval': medicine.interval,
-        'startTime': medicine.startTime,
-        // Add other fields as needed
-      };
-
-      // Reference to the "medication" collection for the current user
-      CollectionReference medicationCollection =
-          firestore.collection('users').doc(userId).collection('medication');
-
-      // Add a new document with a unique ID
-      await medicationCollection.add(medicationData);
-    }
-  }
-
+//
   @override
   Widget build(BuildContext context) {
     final GlobalBloc globalBloc = Provider.of<GlobalBloc>(context);
@@ -238,7 +210,7 @@ class _NewEntryPageState extends State<NewEntryPage> {
 
                       //firebase connection
 
-                        //
+                      //
                       //TODO: fix the send medication to firebase
                       // Save the medication data to Firestore
                       //addMedicationToFirestore(newEntryMedicine);
@@ -252,7 +224,7 @@ class _NewEntryPageState extends State<NewEntryPage> {
                       if (medicationController.text != "") {
                         medicationName = medicationController.text;
                       }
-                       //dosage
+                      //dosage
                       if (dosageController.text == "") {
                         dosage = 0;
                       }
@@ -304,6 +276,7 @@ class _NewEntryPageState extends State<NewEntryPage> {
                       //schedule notification
 
                       //lead to success screen routes.
+
                       /*
                       Navigator.push(
                           context,
@@ -501,7 +474,7 @@ class _IntervalSelectionState extends State<IntervalSelection> {
 
   @override
   Widget build(BuildContext context) {
-    final NewEntryBloc _newEntryBloc = Provider.of<NewEntryBloc>(context);
+    final NewEntryBloc newEntryBloc = Provider.of<NewEntryBloc>(context);
 
     return Row(
       mainAxisAlignment: MainAxisAlignment.spaceEvenly,
@@ -535,11 +508,13 @@ class _IntervalSelectionState extends State<IntervalSelection> {
               ),
             );
           }).toList(),
-          onChanged: (newval) {
-            setState(() {
-              _selected = newval!;
-              _newEntryBloc.updateInterval(newval);
-            });
+          onChanged: (newVal) {
+            setState(
+              () {
+                _selected = newVal!;
+                newEntryBloc.updateInterval(newVal);
+              },
+            );
           },
         ),
         const SizedBox(
