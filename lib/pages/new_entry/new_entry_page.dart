@@ -74,7 +74,7 @@ class _NewEntryPageState extends State<NewEntryPage> {
           // TODO: Handle this case.
           break;
         case ErrorEntry.interval:
-          displayError("Please enter the required Interval");
+          displayError("Please enter the required Interval!");
           break;
         case ErrorEntry.startTime:
           displayError("Please enter the medication's time");
@@ -215,7 +215,11 @@ class _NewEntryPageState extends State<NewEntryPage> {
                       if (medicationController.text != "") {
                         medicationName = medicationController.text;
                       }
+                       //dosage
                       if (dosageController.text == "") {
+                        dosage = 0;
+                      }
+                      if (dosageController.text != "") {
                         dosage = int.parse(dosageController.text);
                       }
                       if (dosageController.text != "") {
