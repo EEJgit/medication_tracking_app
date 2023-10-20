@@ -6,6 +6,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:medication_tracking_app/common/convert_time.dart';
 import 'package:medication_tracking_app/global_bloc.dart';
+import 'package:medication_tracking_app/models/errors.dart';
 import 'package:medication_tracking_app/models/medication_type.dart';
 import 'package:medication_tracking_app/models/medicine.dart';
 import 'package:medication_tracking_app/pages/new_entry/errors_entry.dart';
@@ -58,7 +59,7 @@ class _NewEntryPageState extends State<NewEntryPage> {
 
   //the initialize error method TODO: this method below.
   void initializeErrorListen() {
-    _newEntryBloc.errorState!.listen((ErrorEntry error) {
+    _newEntryBloc.errorState$!.listen((ErrorEntry error) {
       switch (error) {
         case ErrorEntry.nameNull:
           displayError("Enter the medicine's name");
@@ -148,7 +149,7 @@ class _NewEntryPageState extends State<NewEntryPage> {
             const SizedBox(height: 7),
             StreamBuilder(
                 //stream: _newEntryBloc,
-                stream: context.watch<NewEntryBloc>().selectedMedication,
+                stream: context.watch<NewEntryBloc>().selectedMedicineType,
                 builder: (context, snapshot) {
                   return Row(
                     mainAxisAlignment: MainAxisAlignment.spaceAround,
@@ -226,26 +227,26 @@ class _NewEntryPageState extends State<NewEntryPage> {
                           return;
                         }
                       }
-                      if (_newEntryBloc.selectInterval!.value == 0) {
+                      if (_newEntryBloc.selectIntervals!.value == 0) {
                         _newEntryBloc.submitError(ErrorEntry.interval);
                         return;
                       }
-                      if (_newEntryBloc.selectedTimeOfDay!.value == "none") {
+                      if (_newEntryBloc.selectedTimeOfDay$!.value == "none") {
                         _newEntryBloc.submitError(ErrorEntry.startTime);
                         return;
                       }
 
                       String medicineType = _newEntryBloc
-                          .selectedMedication!.value
+                          .selectedMedicineType!.value
                           .toString()
                           .substring(13);
 
-                      int interval = _newEntryBloc.selectInterval!.value;
+                      int interval = _newEntryBloc.selectIntervals!.value;
 
                       String startOfTime =
-                          _newEntryBloc.selectedTimeOfDay!.value;
+                          _newEntryBloc.selectedTimeOfDay$!.value;
                       List<int> intIds =
-                          makeIds(24 / _newEntryBloc.selectInterval!.value);
+                          makeIds(24 / _newEntryBloc.selectIntervals!.value);
                       List<String> notificationIDs =
                           intIds.map((i) => i.toString()).toList();
 
