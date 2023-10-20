@@ -72,20 +72,20 @@ class _NewEntryPageState extends State<NewEntryPage> {
         case ErrorEntry.dosage:
           displayError("Please Enter the required med");
           break;
-        case ErrorEntry.type:
-          // TODO: Handle this case.
-          break;
+        
         case ErrorEntry.interval:
           displayError("Please enter the required Interval!");
           break;
         case ErrorEntry.startTime:
           displayError("Please enter the medication's time");
+          break; // Add a break statement here
         case ErrorEntry.none:
-          // TODO: Handle this case.
+          // Handle this case.
           break;
       }
     });
   }
+
 
   //TODO: this displays the error to the screen
   void displayError(String error) {
@@ -238,6 +238,7 @@ class _NewEntryPageState extends State<NewEntryPage> {
 
                       //firebase connection
 
+                        //
                       //TODO: fix the send medication to firebase
                       // Save the medication data to Firestore
                       //addMedicationToFirestore(newEntryMedicine);
