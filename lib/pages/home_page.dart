@@ -4,9 +4,9 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
+import 'package:medication_tracking_app/constants.dart';
 import 'package:medication_tracking_app/global_bloc.dart';
 import 'package:medication_tracking_app/pages/medication_details/medication_details.dart';
-import 'package:medication_tracking_app/pages/new_entry/new_entry_bloc.dart';
 import 'package:medication_tracking_app/pages/new_entry/new_entry_page.dart';
 import 'package:provider/provider.dart';
 
@@ -58,7 +58,11 @@ class _HomePageState extends State<HomePage> {
         appBar: AppBar(
           title: Row(
             children: [
-              Text("Hello, "),
+              Text("Hello, ",
+              style: TextStyle(
+                color: kScaffoldColor,
+              ),
+              ),
               Text(
                 "$firstName 👋",
                 style: TextStyle(

@@ -1,39 +1,36 @@
-// ignore_for_file: prefer_const_constructors
-
 import 'dart:math';
-import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_svg/svg.dart';
-import 'package:medication_tracking_app/common/convert_time.dart';
+import 'package:flutter_local_notifications/flutter_local_notifications.dart';
+import 'package:flutter_svg/flutter_svg.dart';
+import 'package:medication_tracking_app/constants.dart';
 import 'package:medication_tracking_app/global_bloc.dart';
 import 'package:medication_tracking_app/models/errors.dart';
 import 'package:medication_tracking_app/models/medication_type.dart';
 import 'package:medication_tracking_app/models/medicine.dart';
-import 'package:medication_tracking_app/pages/new_entry/errors_entry.dart';
 import 'package:medication_tracking_app/pages/new_entry/new_entry_bloc.dart';
 import 'package:medication_tracking_app/success_screen/success_scren.dart';
+
 import 'package:provider/provider.dart';
+import '../../common/convert_time.dart';
 
 class NewEntryPage extends StatefulWidget {
-  const NewEntryPage({
-    super.key,
-  });
+  const NewEntryPage({Key? key}) : super(key: key);
 
   @override
   State<NewEntryPage> createState() => _NewEntryPageState();
 }
 
 class _NewEntryPageState extends State<NewEntryPage> {
-  late TextEditingController medicationController;
+  late TextEditingController nameController;
   late TextEditingController dosageController;
-  late GlobalKey<ScaffoldState> _scaffoldKey;
+  late FlutterLocalNotificationsPlugin flutterLocalNotificationsPlugin;
   late NewEntryBloc _newEntryBloc;
+  late GlobalKey<ScaffoldState> _scaffoldKey;
 
   @override
   void dispose() {
     super.dispose();
-    medicationController.dispose();
+    nameController.dispose();
     dosageController.dispose();
     _newEntryBloc.dispose();
   }
@@ -41,64 +38,14 @@ class _NewEntryPageState extends State<NewEntryPage> {
   @override
   void initState() {
     super.initState();
-    medicationController = TextEditingController();
+    nameController = TextEditingController();
     dosageController = TextEditingController();
-    _scaffoldKey = GlobalKey<ScaffoldState>();
+    flutterLocalNotificationsPlugin = FlutterLocalNotificationsPlugin();
     _newEntryBloc = NewEntryBloc();
+    _scaffoldKey = GlobalKey<ScaffoldState>();
     initializeErrorListen();
   }
 
-  //this method is used to make the ids
-  List<int> makeIds(double n) {
-    var rng = Random();
-    List<int> ids = [];
-    for (var i = 0; i < n; i++) {
-      ids.add(rng.nextInt(1000000000));
-    }
-    return ids;
-  }
-
-  //the initialize error method TODO: this method below.
-  void initializeErrorListen() {
-    _newEntryBloc.errorState$!.listen((ErrorEntry error) {
-      switch (error) {
-        case ErrorEntry.nameNull:
-          displayError("Enter the medicine's name");
-          break;
-        case ErrorEntry.nameDuplicate:
-          displayError("This Medication Already Exists");
-          break;
-        case ErrorEntry.dosage:
-          displayError("Please Enter the required med");
-          break;
-
-        case ErrorEntry.interval:
-          displayError("Please enter the required Interval!");
-          break;
-        case ErrorEntry.startTime:
-          displayError("Please enter the medication's time");
-          break; // Add a break statement here
-        case ErrorEntry.none:
-          // Handle this case.
-          break;
-      }
-    });
-  }
-
-  //TODO: this displays the error to the screen
-  void displayError(String error) {
-    ScaffoldMessenger.of(context).showSnackBar(SnackBar(
-      backgroundColor: Colors.red,
-      content: Center(child: Text(error)),
-      duration: Duration(
-        milliseconds: 2000,
-      ),
-    ));
-  }
-
-//This is the firebase connection code
-
-//
   @override
   Widget build(BuildContext context) {
     final GlobalBloc globalBloc = Provider.of<GlobalBloc>(context);
@@ -107,122 +54,141 @@ class _NewEntryPageState extends State<NewEntryPage> {
       resizeToAvoidBottomInset: false,
       appBar: AppBar(
         title: const Text(
-          "Add New",
+          'Add New',
           style: TextStyle(
-            fontWeight: FontWeight.w700,
-          ),
+            color:Colors.white,
+          )
         ),
       ),
-      body: Padding(
-        padding: const EdgeInsets.all(8.0),
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            const SizedBox(height: 10),
-            const PanelTile(
-              title: 'Medication Name',
-              isRequired: true,
-            ),
-            TextFormField(
-              maxLength: 12,
-              controller: medicationController,
-              style: const TextStyle(
-                color: Color.fromARGB(255, 52, 69, 165),
+      body: Provider<NewEntryBloc>.value(
+        value: _newEntryBloc,
+        child: Padding(
+          padding: const EdgeInsets.all(8),
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              const PanelTitle(
+                title: 'Medicine Name',
+                isRequired: true,
               ),
-              decoration: const InputDecoration(
-                border: UnderlineInputBorder(),
+              TextFormField(
+                maxLength: 12,
+                controller: nameController,
+                textCapitalization: TextCapitalization.words,
+                decoration: const InputDecoration(
+                  border: UnderlineInputBorder(),
+                ),
+                style: Theme.of(context)
+                    .textTheme
+                    .titleSmall!
+                    .copyWith(color: kOtherColor),
               ),
-            ),
-            const PanelTile(
-              isRequired: false,
-              title: 'Dosage in Mg',
-            ),
-            TextFormField(
-              keyboardType: TextInputType.number,
-              maxLength: 12,
-              controller: dosageController,
-              style: const TextStyle(
-                color: Color.fromARGB(255, 52, 69, 165),
+              const PanelTitle(
+                title: 'Dosage in mg',
+                isRequired: false,
               ),
-              decoration: const InputDecoration(
-                border: UnderlineInputBorder(),
+              TextFormField(
+                maxLength: 12,
+                controller: dosageController,
+                textCapitalization: TextCapitalization.words,
+                keyboardType: TextInputType.number,
+                decoration: const InputDecoration(
+                  border: UnderlineInputBorder(),
+                ),
+                style: Theme.of(context)
+                    .textTheme
+                    .titleSmall!
+                    .copyWith(color: kOtherColor),
               ),
-            ),
-            const PanelTile(isRequired: false, title: "Medication Type"),
-            const SizedBox(height: 7),
-            StreamBuilder(
-                //stream: _newEntryBloc,
-                stream: context.watch<NewEntryBloc>().selectedMedicineType,
-                builder: (context, snapshot) {
-                  return Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceAround,
-                    children: [
-                      MedicationTypeColumn(
-                        iconValue: 'assets/icons/bottle.svg',
-                        isSelected:
-                            snapshot.data == MedicineType.bottle ? true : false,
-                        medicineType: MedicineType.bottle,
-                        name: "bottle",
-                      ),
-                      MedicationTypeColumn(
-                        iconValue: 'assets/icons/syringe.svg',
-                        isSelected: snapshot.data == MedicineType.syringe
-                            ? true
-                            : false,
-                        medicineType: MedicineType.syringe,
-                        name: "syringe",
-                      ),
-                      MedicationTypeColumn(
-                        iconValue: 'assets/icons/pill.svg',
-                        isSelected:
-                            snapshot.data == MedicineType.pill ? true : false,
-                        medicineType: MedicineType.pill,
-                        name: "pill",
-                      ),
-                    ],
-                  );
-                }),
-            const SizedBox(height: 8),
-            const PanelTile(isRequired: true, title: "Sections Interval"),
-            const SizedBox(height: 8),
-            const Row(
-              children: [
-                IntervalSelection(),
-              ],
-            ),
-            const PanelTile(isRequired: true, title: "Sorting Time"),
-            const SelectTime(),
-            const SizedBox(height: 8),
-            Padding(
-              padding: const EdgeInsets.only(left: 8.0, right: 9),
-              child: Center(
+              const SizedBox(
+                height: 8,
+              ),
+              const PanelTitle(title: 'Medicine Type', isRequired: false),
+              Padding(
+                padding: const EdgeInsets.only(top: 10),
+                child: StreamBuilder<MedicineType>(
+                  //new entry block
+                  stream: _newEntryBloc.selectedMedicineType,
+                  builder: (context, snapshot) {
+                    return Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: [
+                        //not yet clickable?
+                        MedicineTypeColumn(
+                            medicineType: MedicineType.bottle,
+                            name: 'Bottle',
+                            iconValue: 'assets/icons/bottle.svg',
+                            isSelected: snapshot.data == MedicineType.bottle
+                                ? true
+                                : false),
+                        MedicineTypeColumn(
+                            medicineType: MedicineType.pill,
+                            name: 'Pill',
+                            iconValue: 'assets/icons/pill.svg',
+                            isSelected: snapshot.data == MedicineType.pill
+                                ? true
+                                : false),
+                        MedicineTypeColumn(
+                            medicineType: MedicineType.syringe,
+                            name: 'Syringe',
+                            iconValue: 'assets/icons/syringe.svg',
+                            isSelected: snapshot.data == MedicineType.syringe
+                                ? true
+                                : false),
+                        MedicineTypeColumn(
+                            medicineType: MedicineType.tablet,
+                            name: 'Tablet',
+                            iconValue: 'assets/icons/tablet.svg',
+                            isSelected: snapshot.data == MedicineType.tablet
+                                ? true
+                                : false),
+                      ],
+                    );
+                  },
+                ),
+              ),
+              const PanelTitle(title: 'Interval Selection', isRequired: true),
+              const IntervalSelection(),
+              const PanelTitle(title: 'Starting Time', isRequired: true),
+              const SelectTime(),
+              const SizedBox(
+                height: 10,
+              ),
+              Padding(
+                padding: const EdgeInsets.only(
+                  left: 8.0,
+                  right: 8.0,
+                ),
                 child: SizedBox(
-                  height: 50,
-                  width: 180,
+                  width: 400,
+                  height: 45,
                   child: TextButton(
                     style: TextButton.styleFrom(
-                      backgroundColor: Color.fromARGB(255, 52, 69, 165),
+                      backgroundColor: const Color.fromARGB(255, 52, 69, 165),
+                    ),
+                    child: const Center(
+                      child: Text(
+                        'Confirm',
+                        style: TextStyle(
+                            color: Colors.white,
+                            fontWeight: FontWeight.bold,
+                            fontSize: 20),
+                      ),
                     ),
                     onPressed: () {
-                      //add medication
-
-                      //medication validation
-
-                      //firebase connection
-
-                      //
-                      //TODO: fix the send medication to firebase
-                      // Save the medication data to Firestore
-                      //addMedicationToFirestore(newEntryMedicine);
-                      // Handle the functionality of the confirm button here.
-                      String? medicationName;
+                      //add medicine
+                      //some validations
+                      //go to success screen
+                      String? medicineName;
                       int? dosage;
-                      if (medicationController.text == "") {
+
+                      //medicineName
+                      if (nameController.text == "") {
                         _newEntryBloc.submitError(ErrorEntry.nameNull);
                         return;
                       }
-                      if (medicationController.text != "") {
-                        medicationName = medicationController.text;
+                      if (nameController.text != "") {
+                        medicineName = nameController.text;
                       }
                       //dosage
                       if (dosageController.text == "") {
@@ -231,11 +197,8 @@ class _NewEntryPageState extends State<NewEntryPage> {
                       if (dosageController.text != "") {
                         dosage = int.parse(dosageController.text);
                       }
-                      if (dosageController.text != "") {
-                        dosage = int.parse(dosageController.text);
-                      }
                       for (var medicine in globalBloc.medicineList$!.value) {
-                        if (medicationName == medicine.medicineName) {
+                        if (medicineName == medicine.medicineName) {
                           _newEntryBloc.submitError(ErrorEntry.nameDuplicate);
                           return;
                         }
@@ -244,7 +207,7 @@ class _NewEntryPageState extends State<NewEntryPage> {
                         _newEntryBloc.submitError(ErrorEntry.interval);
                         return;
                       }
-                      if (_newEntryBloc.selectedTimeOfDay$!.value == "none") {
+                      if (_newEntryBloc.selectedTimeOfDay$!.value == 'None') {
                         _newEntryBloc.submitError(ErrorEntry.startTime);
                         return;
                       }
@@ -255,51 +218,84 @@ class _NewEntryPageState extends State<NewEntryPage> {
                           .substring(13);
 
                       int interval = _newEntryBloc.selectIntervals!.value;
-
-                      String startOfTime =
+                      String startTime =
                           _newEntryBloc.selectedTimeOfDay$!.value;
-                      List<int> intIds =
-                          makeIds(24 / _newEntryBloc.selectIntervals!.value);
+
+                      List<int> intIDs =
+                          makeIDs(24 / _newEntryBloc.selectIntervals!.value);
                       List<String> notificationIDs =
-                          intIds.map((i) => i.toString()).toList();
+                          intIDs.map((i) => i.toString()).toList();
 
                       Medicine newEntryMedicine = Medicine(
-                        notificationIDs: notificationIDs,
-                        medicineName: medicationName,
-                        medicineType: medicineType,
-                        dosage: dosage,
-                        interval: interval,
-                        startTime: startOfTime,
-                      );
-                      //update the medication list using the global bloc
+                          notificationIDs: notificationIDs,
+                          medicineName: medicineName,
+                          dosage: dosage,
+                          medicineType: medicineType,
+                          interval: interval,
+                          startTime: startTime);
+
+                      //update medicine list via global bloc
                       globalBloc.updateMedicationList(newEntryMedicine);
+
                       //schedule notification
 
-                      //lead to success screen routes.
-
-                      /*
+                      //Move to the next success screen
                       Navigator.push(
                           context,
                           MaterialPageRoute(
-                              builder: (context) => SuccessScreen(),),);
-
-                      */
+                              builder: (context) => const SuccessScreen()));
                     },
-                    child: const Text(
-                      "Confirm",
-                      style: TextStyle(
-                          color: Colors.white,
-                          fontWeight: FontWeight.bold,
-                          fontSize: 18),
-                    ),
                   ),
                 ),
               ),
-            ),
-          ],
+            ],
+          ),
         ),
       ),
     );
+  }
+
+  void initializeErrorListen() {
+    _newEntryBloc.errorState$!.listen((ErrorEntry error) {
+      switch (error) {
+        case ErrorEntry.nameNull:
+          displayError("Please enter the medicine's name");
+          break;
+
+        case ErrorEntry.nameDuplicate:
+          displayError("Medicine name already exists");
+          break;
+        case ErrorEntry.dosage:
+          displayError("Please enter the dosage required");
+          break;
+        case ErrorEntry.interval:
+          displayError("Please select the reminder's interval");
+          break;
+        case ErrorEntry.startTime:
+          displayError("Please select the reminder's starting time");
+          break;
+        default:
+      }
+    });
+  }
+
+  void displayError(String error) {
+    ScaffoldMessenger.of(context).showSnackBar(
+      SnackBar(
+        backgroundColor: kOtherColor,
+        content: Text(error),
+        duration: const Duration(milliseconds: 2000),
+      ),
+    );
+  }
+
+  List<int> makeIDs(double n) {
+    var rng = Random();
+    List<int> ids = [];
+    for (int i = 0; i < n; i++) {
+      ids.add(rng.nextInt(1000000000));
+    }
+    return ids;
   }
 }
 
@@ -331,7 +327,7 @@ class _SelectTimeState extends State<SelectTime> {
   @override
   Widget build(BuildContext context) {
     return SizedBox(
-      height: 55,
+      height: 45,
       child: Padding(
         padding: const EdgeInsets.only(top: 8.0),
         child: TextButton(
@@ -341,7 +337,7 @@ class _SelectTimeState extends State<SelectTime> {
                 if (states.contains(MaterialState.pressed)) {
                   return Colors.blueAccent.withOpacity(0.5);
                 }
-                return Color.fromARGB(255, 52, 69, 165);
+                return const Color.fromARGB(255, 52, 69, 165);
               },
             ),
           ),
@@ -365,104 +361,8 @@ class _SelectTimeState extends State<SelectTime> {
   }
 }
 
-class PanelTile extends StatelessWidget {
-  const PanelTile(
-      {super.key, Key? keys, required this.isRequired, required this.title});
-  final String title;
-  final bool isRequired;
-
-  @override
-  Widget build(BuildContext context) {
-    return Padding(
-      padding: const EdgeInsets.only(top: 8),
-      child: Text.rich(
-        TextSpan(
-          children: <TextSpan>[
-            TextSpan(
-                text: title,
-                style: TextStyle(fontSize: 15, fontWeight: FontWeight.bold)),
-          ],
-        ),
-      ),
-    );
-  }
-}
-
-class MedicationTypeColumn extends StatelessWidget {
-  const MedicationTypeColumn({
-    super.key,
-    Key? keys,
-    required this.iconValue,
-    required this.isSelected,
-    required this.medicineType,
-    required this.name,
-  });
-  final String name;
-  final String iconValue;
-  final bool isSelected;
-  final MedicineType medicineType;
-
-  @override
-  Widget build(BuildContext context) {
-    final newEntry = Provider.of<NewEntryBloc>(context);
-    return GestureDetector(
-      onTap: () {
-        newEntry.updateSelectedMedicine(medicineType);
-      },
-      child: Column(
-        children: [
-          Container(
-            width: 80,
-            height: 70,
-            decoration: BoxDecoration(
-              borderRadius: BorderRadius.circular(15),
-              color: isSelected
-                  ? Colors.blue[200]
-                  : Color.fromARGB(255, 52, 69, 165),
-            ), //The Icons
-            child: Padding(
-              padding: const EdgeInsets.all(12.0),
-              child: SvgPicture.asset(
-                iconValue,
-                height: 40,
-                width: 20,
-                // ignore: deprecated_member_use
-                //color: Colors.blue
-              ),
-            ),
-          ),
-          const SizedBox(
-            height: 3,
-          ),
-          Container(
-            width: 70,
-            height: 30,
-            decoration: BoxDecoration(
-              color: isSelected
-                  ? Colors.blue[200]
-                  : Color.fromARGB(255, 52, 69, 165),
-              borderRadius: BorderRadius.circular(8),
-            ),
-            child: Center(
-              child: Text(
-                name,
-                style: TextStyle(
-                  color: isSelected ? Colors.grey[200] : Colors.white,
-                  fontWeight: FontWeight.w600,
-                ),
-              ),
-            ),
-          )
-        ],
-      ),
-    );
-  }
-}
-
 class IntervalSelection extends StatefulWidget {
-  const IntervalSelection({
-    super.key,
-  });
+  const IntervalSelection({Key? key}) : super(key: key);
 
   @override
   State<IntervalSelection> createState() => _IntervalSelectionState();
@@ -471,62 +371,161 @@ class IntervalSelection extends StatefulWidget {
 class _IntervalSelectionState extends State<IntervalSelection> {
   final _intervals = [6, 8, 12, 24];
   var _selected = 0;
-
   @override
   Widget build(BuildContext context) {
     final NewEntryBloc newEntryBloc = Provider.of<NewEntryBloc>(context);
-
-    return Row(
-      mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-      children: [
-        const Text(
-          "Remind me Every",
-          style: TextStyle(fontWeight: FontWeight.w800),
-        ),
-        const SizedBox(
-          width: 18,
-        ),
-        DropdownButton(
-          iconEnabledColor: Color.fromARGB(255, 52, 69, 165),
-          dropdownColor: Colors.grey[200],
-          hint: _selected == 0
-              ? Text(
-                  "Select an interval",
-                  style: TextStyle(
-                    color: Color.fromARGB(255, 52, 69, 165),
-                    fontWeight: FontWeight.bold,
-                  ),
-                )
-              : null,
-          value: _selected == 0 ? null : _selected,
-          items: _intervals.map((int value) {
-            return DropdownMenuItem<int>(
-              value: value,
-              child: Text(
-                value.toString(),
-                style: const TextStyle(color: Color.fromARGB(255, 52, 69, 165)),
-              ),
-            );
-          }).toList(),
-          onChanged: (newVal) {
-            setState(
-              () {
-                _selected = newVal!;
-                newEntryBloc.updateInterval(newVal);
-              },
-            );
-          },
-        ),
-        const SizedBox(
-          width: 18,
-        ),
-        Text(
-          _selected == 1 ? "hour" : "hours",
-          style: const TextStyle(
-            fontWeight: FontWeight.bold,
+    return Padding(
+      padding: const EdgeInsets.only(top: 10),
+      child: Row(
+        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+        children: [
+          Text(
+            'Remind me every',
+            style: Theme.of(context).textTheme.titleSmall!.copyWith(
+                  color: kTextColor,
+                ),
           ),
+          DropdownButton(
+            iconEnabledColor: kOtherColor,
+            dropdownColor: kScaffoldColor,
+            hint: _selected == 0
+                ? Text(
+                    'Select an Interval',
+                    style: Theme.of(context).textTheme.bodySmall!.copyWith(
+                          color: kPrimaryColor,
+                        ),
+                  )
+                : null,
+            elevation: 4,
+            value: _selected == 0 ? null : _selected,
+            items: _intervals.map(
+              (int value) {
+                return DropdownMenuItem<int>(
+                  value: value,
+                  child: Text(
+                    value.toString(),
+                    style: Theme.of(context).textTheme.bodySmall!.copyWith(
+                          color: kSecondaryColor,
+                        ),
+                  ),
+                );
+              },
+            ).toList(),
+            onChanged: (newVal) {
+              setState(
+                () {
+                  _selected = newVal!;
+                  newEntryBloc.updateInterval(newVal);
+                },
+              );
+            },
+          ),
+          Text(
+            _selected == 1 ? " hour" : " hours",
+            style: Theme.of(context)
+                .textTheme
+                .titleSmall!
+                .copyWith(color: kTextColor),
+          ),
+        ],
+      ),
+    );
+  }
+}
+
+class MedicineTypeColumn extends StatelessWidget {
+  const MedicineTypeColumn(
+      {Key? key,
+      required this.medicineType,
+      required this.name,
+      required this.iconValue,
+      required this.isSelected})
+      : super(key: key);
+  final MedicineType medicineType;
+  final String name;
+  final String iconValue;
+  final bool isSelected;
+  @override
+  Widget build(BuildContext context) {
+    final NewEntryBloc newEntryBloc = Provider.of<NewEntryBloc>(context);
+    return GestureDetector(
+      onTap: () {
+        //select medicine type
+        //lets create a new block for selecting and adding new entry
+        newEntryBloc.updateSelectedMedicine(medicineType);
+      },
+      child: Column(
+        children: [
+          Container(
+            width: 80,
+            alignment: Alignment.center,
+            decoration: BoxDecoration(
+                borderRadius: BorderRadius.circular(18),
+                color: isSelected ? Colors.blue[700] : Colors.white),
+            child: Center(
+              child: Padding(
+                padding: const EdgeInsets.only(
+                  top: 18,
+                  bottom: 18,
+                ),
+                child: SvgPicture.asset(
+                  iconValue,
+                  height: 30,
+                ),
+              ),
+            ),
+          ),
+          Padding(
+            padding: const EdgeInsets.only(top: 18),
+            child: Container(
+              width: 75,
+              height: 21,
+              decoration: BoxDecoration(
+                color: isSelected ? Colors.blue[700] : Colors.white,
+                borderRadius: BorderRadius.circular(8),
+              ),
+              child: Center(
+                child: Text(
+                  name,
+                  style: TextStyle(
+                    color: isSelected ? Colors.grey[200] : Colors.blue[200],
+                    fontWeight: FontWeight.w600,
+                  ),
+                ),
+              ),
+            ),
+          ),
+        ],
+      ),
+    );
+  }
+}
+
+class PanelTitle extends StatelessWidget {
+  const PanelTitle({Key? key, required this.title, required this.isRequired})
+      : super(key: key);
+  final String title;
+  final bool isRequired;
+  @override
+  Widget build(BuildContext context) {
+    return Padding(
+      padding: const EdgeInsets.only(top: 10),
+      child: Text.rich(
+        TextSpan(
+          children: <TextSpan>[
+            TextSpan(
+              text: title,
+              style: Theme.of(context).textTheme.labelMedium,
+            ),
+            TextSpan(
+              text: isRequired ? " *" : "",
+              style: TextStyle(
+                color: Colors.red[400],
+              ),
+            ),
+          ],
         ),
-      ],
+      ),
     );
   }
 }

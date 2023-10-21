@@ -1,5 +1,4 @@
 // Import the necessary package for Flutter
-import 'package:flutter/material.dart';
 
 // Define a class named Medicine
 class Medicine {
