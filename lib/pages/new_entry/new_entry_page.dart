@@ -1,3 +1,5 @@
+// ignore_for_file: prefer_const_constructors
+
 import 'dart:math';
 import 'package:flutter/material.dart';
 import 'package:flutter_local_notifications/flutter_local_notifications.dart';
@@ -67,6 +69,9 @@ class _NewEntryPageState extends State<NewEntryPage> {
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
+              SizedBox(
+                height: 2,
+              ),
               const PanelTitle(
                 title: 'Medicine Name',
                 isRequired: true,
@@ -100,12 +105,9 @@ class _NewEntryPageState extends State<NewEntryPage> {
                     .titleSmall!
                     .copyWith(color: kOtherColor),
               ),
-              const SizedBox(
-                height: 8,
-              ),
               const PanelTitle(title: 'Medicine Type', isRequired: false),
               Padding(
-                padding: const EdgeInsets.only(top: 10),
+                padding: const EdgeInsets.only(top: 8),
                 child: StreamBuilder<MedicineType>(
                   //new entry block
                   stream: _newEntryBloc.selectedMedicineType,
@@ -147,6 +149,7 @@ class _NewEntryPageState extends State<NewEntryPage> {
                   },
                 ),
               ),
+              SizedBox(height: 2,),
               const PanelTitle(title: 'Interval Selection', isRequired: true),
               const IntervalSelection(),
               const PanelTitle(title: 'Starting Time', isRequired: true),
@@ -223,11 +226,7 @@ class _NewEntryPageState extends State<NewEntryPage> {
 
                       List<int> intIDs =
                           makeIDs(24 / _newEntryBloc.selectIntervals!.value);
-                      List<String> notificationIDs =
-                          intIDs.map((i) => i.toString()).toList();
-
                       Medicine newEntryMedicine = Medicine(
-                          notificationIDs: notificationIDs,
                           medicineName: medicineName,
                           dosage: dosage,
                           medicineType: medicineType,
@@ -235,7 +234,7 @@ class _NewEntryPageState extends State<NewEntryPage> {
                           startTime: startTime);
 
                       //update medicine list via global bloc
-                      globalBloc.updateMedicationList(newEntryMedicine);
+                      globalBloc.updateMedicineList(newEntryMedicine);
 
                       //schedule notification
 
@@ -381,9 +380,10 @@ class _IntervalSelectionState extends State<IntervalSelection> {
         children: [
           Text(
             'Remind me every',
-            style: Theme.of(context).textTheme.titleSmall!.copyWith(
-                  color: kTextColor,
-                ),
+            style: TextStyle(
+              color: Colors.grey[600],
+              fontSize: 18,
+                  fontWeight: FontWeight.w700)
           ),
           DropdownButton(
             iconEnabledColor: kOtherColor,
@@ -391,9 +391,10 @@ class _IntervalSelectionState extends State<IntervalSelection> {
             hint: _selected == 0
                 ? Text(
                     'Select an Interval',
-                    style: Theme.of(context).textTheme.bodySmall!.copyWith(
-                          color: kPrimaryColor,
-                        ),
+                    style: TextStyle(
+                      color: Color.fromARGB(255, 52, 69, 165),
+                      fontWeight: FontWeight.w700
+                    )
                   )
                 : null,
             elevation: 4,
@@ -404,9 +405,10 @@ class _IntervalSelectionState extends State<IntervalSelection> {
                   value: value,
                   child: Text(
                     value.toString(),
-                    style: Theme.of(context).textTheme.bodySmall!.copyWith(
-                          color: kSecondaryColor,
-                        ),
+                    style: TextStyle(
+                      color: Color.fromARGB(255, 52, 69, 165),
+                      fontWeight: FontWeight.w300
+                    )
                   ),
                 );
               },
@@ -461,7 +463,7 @@ class MedicineTypeColumn extends StatelessWidget {
             alignment: Alignment.center,
             decoration: BoxDecoration(
                 borderRadius: BorderRadius.circular(18),
-                color: isSelected ? Colors.blue[700] : Colors.white),
+                color: isSelected ?  Color.fromARGB(255, 52, 69, 165) : Colors.white),
             child: Center(
               child: Padding(
                 padding: const EdgeInsets.only(
@@ -481,15 +483,15 @@ class MedicineTypeColumn extends StatelessWidget {
               width: 75,
               height: 21,
               decoration: BoxDecoration(
-                color: isSelected ? Colors.blue[700] : Colors.white,
+                color: isSelected ?  Color.fromARGB(255, 52, 69, 165) : Colors.white,
                 borderRadius: BorderRadius.circular(8),
               ),
               child: Center(
                 child: Text(
                   name,
                   style: TextStyle(
-                    color: isSelected ? Colors.grey[200] : Colors.blue[200],
-                    fontWeight: FontWeight.w600,
+                    color: isSelected ? Colors.grey[200] :  Color.fromARGB(255, 52, 69, 165),
+                    fontWeight: FontWeight.w700,
                   ),
                 ),
               ),
@@ -509,13 +511,17 @@ class PanelTitle extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Padding(
-      padding: const EdgeInsets.only(top: 10),
+      padding: const EdgeInsets.only(top: 5),
       child: Text.rich(
         TextSpan(
           children: <TextSpan>[
             TextSpan(
               text: title,
-              style: Theme.of(context).textTheme.labelMedium,
+              style:const TextStyle(
+                fontSize:18 ,
+                color:  Color.fromARGB(255, 52, 69, 165),
+                fontWeight: FontWeight.w500,
+              ),
             ),
             TextSpan(
               text: isRequired ? " *" : "",

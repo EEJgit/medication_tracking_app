@@ -2,6 +2,7 @@ import 'dart:convert';
 
 import 'package:medication_tracking_app/models/medicine.dart';
 import 'package:rxdart/subjects.dart';
+
 import 'package:shared_preferences/shared_preferences.dart';
 
 class GlobalBloc {
@@ -14,24 +15,22 @@ class GlobalBloc {
     makeMedicationList();
   }
 
-  Future updateMedicationList(Medicine newMedicine) async {
-    var blocList = _medicationList$!.value;
+    Future updateMedicineList(Medicine newMedicine) async {
+    var blocList = medicineList$!.value;
     blocList.add(newMedicine);
-    _medicationList$!.add(blocList);
+    medicineList$!.add(blocList);
 
-    Map<String, dynamic> tempMed = newMedicine.toJson();
+    Map<String, dynamic> tempMap = newMedicine.toJson();
     SharedPreferences? sharedUser = await SharedPreferences.getInstance();
-    String newMedicineJson = jsonEncode(tempMed);
+    String newMedicineJson = jsonEncode(tempMap);
     List<String> medicineJsonList = [];
-
-    if (sharedUser.getString('medicines') == null) {
+    if (sharedUser.getStringList('medicines') == null) {
       medicineJsonList.add(newMedicineJson);
     } else {
       medicineJsonList = sharedUser.getStringList('medicines')!;
       medicineJsonList.add(newMedicineJson);
     }
     sharedUser.setStringList('medicines', medicineJsonList);
-    
   }
 
   Future makeMedicationList() async {
