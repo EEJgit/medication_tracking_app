@@ -54,19 +54,42 @@ class _HomePageState extends State<HomePage> {
     return Provider<GlobalBloc>.value(
       value: globalBloc!,
       child: Scaffold(
+        floatingActionButton: InkResponse(
+          onTap: () {
+            // go to new entry page
+            Navigator.push(
+              context,
+              MaterialPageRoute(
+                builder: (context) => const NewEntryPage(),
+              ),
+            );
+          },
+          child: SizedBox(
+              width: 65,
+              height: 65,
+              child: Card(
+                color: Color.fromARGB(255, 52, 69, 165),
+                shape: CircleBorder(),
+                child: Icon(
+                  Icons.add,
+                  size: 30,
+                ),
+              )),
+        ),
         backgroundColor: Colors.grey[200],
         appBar: AppBar(
           title: Row(
             children: [
-              Text("Hello, ",
-              style: TextStyle(
-                color: kScaffoldColor,
-              ),
+              Text(
+                "Hello, ",
+                style: TextStyle(
+                  color: kScaffoldColor,
+                ),
               ),
               Text(
                 "$firstName 👋",
                 style: TextStyle(
-                    color: Colors.red[700],
+                    color: Colors.red[500],
                     fontWeight: FontWeight.bold,
                     fontSize: 25),
               ),
@@ -86,64 +109,41 @@ class _HomePageState extends State<HomePage> {
         body: Padding(
           padding: const EdgeInsets.all(8.0),
           child: Center(
-            child: Column(
-              children: [
-                const SizedBox(
-                  height: 23,
-                ),
-                Text(
-                  "Live Healthy, ",
-                  style: TextStyle(
-                      fontSize: 50,
-                      fontWeight: FontWeight.w700,
-                      color: Color.fromARGB(255, 52, 69, 165)),
-                ),
-                Text(
-                  "Worry Less! ",
-                  style: TextStyle(
-                      fontSize: 40,
-                      fontWeight: FontWeight.w700,
-                      color: Color.fromARGB(255, 52, 69, 165)),
-                ),
-                Text(
-                  "Welcome To MedSense.",
-                  style: TextStyle(
-                    fontSize: 20,
-                  ),
-                ),
-                const SizedBox(
-                  height: 10,
-                ),
-                const Text(
-                  "0",
-                  style: TextStyle(fontSize: 25, fontWeight: FontWeight.bold),
-                ),
-                const SizedBox(
-                  height: 20,
-                ),
-                //Here there shoulbe the grid containing the medication
-                Flexible(child: BottomContainer()),
-                Align(
-                  alignment: Alignment.bottomRight,
-                  child: FloatingActionButton(
-                    onPressed: () {
-                      Navigator.push(
-                        context,
-                        MaterialPageRoute(
-                          builder: (context) => const NewEntryPage(),
-                        ),
-                      );
-                    },
-                    backgroundColor: Color.fromARGB(255, 52, 69, 165),
-                    child: Icon(
-                      Icons.add,
-                      color: Colors.white,
-                    ),
-                  ),
-                ),
-              ],
+              child: Column(children: [
+            const SizedBox(
+              height: 23,
             ),
-          ),
+            Text(
+              "Live Healthy, ",
+              style: TextStyle(
+                  fontSize: 50,
+                  fontWeight: FontWeight.w700,
+                  color: Color.fromARGB(255, 52, 69, 165)),
+            ),
+            Text(
+              "Worry Less! ",
+              style: TextStyle(
+                  fontSize: 40,
+                  fontWeight: FontWeight.w500,
+                  color: Color.fromARGB(255, 52, 69, 165)),
+            ),
+            Text(
+              "Welcome To MedSense.",
+              style: TextStyle(fontSize: 20, color: Colors.red[200]),
+            ),
+            const SizedBox(
+              height: 10,
+            ),
+            const Text(
+              "0",
+              style: TextStyle(fontSize: 25, fontWeight: FontWeight.bold),
+            ),
+            const SizedBox(
+              height: 20,
+            ),
+            //Here there should be the grid containing the medication
+            Flexible(child: BottomContainer()),
+          ])),
         ),
       ),
     );
@@ -163,6 +163,7 @@ class BottomContainer extends StatelessWidget {
     );
     */
     return GridView.builder(
+      padding: EdgeInsets.only(top: 1),
       gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
         crossAxisCount: 2,
       ),
@@ -189,7 +190,12 @@ class MedicineCard extends StatelessWidget {
             MaterialPageRoute(builder: (context) => MedicationDetails()));
       },
       child: Container(
-        padding: EdgeInsets.only(left: 8.0, right: 8.0, top: 3.0, bottom: 3.0),
+        padding: EdgeInsets.only(
+          left: 8.0,
+          right: 8.0,
+          top: 3.0,
+          bottom: 3.0,
+        ),
         margin: EdgeInsets.all(22),
         decoration: BoxDecoration(
             color: Colors.white, borderRadius: BorderRadius.circular(9.0)),
@@ -200,9 +206,11 @@ class MedicineCard extends StatelessWidget {
             Spacer(),
             SvgPicture.asset(
               "assets/icons/bottle.svg",
-              height: 80,
+              height: 50,
             ),
-            Spacer(),
+            SizedBox(
+              height: 5,
+            ),
             //this is the section for the medication's name.
             //This is the Hero Tag
             Text(
@@ -221,10 +229,11 @@ class MedicineCard extends StatelessWidget {
               "Every 8 hours",
               style: TextStyle(
                   color: Colors.grey[400],
-                  fontSize: 10,
+                  fontSize: 15,
                   fontWeight: FontWeight.bold,
-                  letterSpacing: 2.0),
+                  letterSpacing: 1.5),
             ),
+            Spacer(),
           ],
         ),
       ),

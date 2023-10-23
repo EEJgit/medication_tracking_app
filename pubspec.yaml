@@ -60,6 +60,7 @@ dependencies:
   shared_preferences: ^2.2.2
   google_fonts: ^6.1.0
   sizer: ^2.0.15
+  flare_flutter: ^3.0.2
 
 dev_dependencies:
   flutter_test:

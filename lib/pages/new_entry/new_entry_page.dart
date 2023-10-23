@@ -83,10 +83,10 @@ class _NewEntryPageState extends State<NewEntryPage> {
                 decoration: const InputDecoration(
                   border: UnderlineInputBorder(),
                 ),
-                style: Theme.of(context)
-                    .textTheme
-                    .titleSmall!
-                    .copyWith(color: kOtherColor),
+                style: TextStyle(
+                  color:Color.fromARGB(255, 52, 69, 165),
+                  fontWeight: FontWeight.w400
+                ),
               ),
               const PanelTitle(
                 title: 'Dosage in mg',
@@ -100,10 +100,9 @@ class _NewEntryPageState extends State<NewEntryPage> {
                 decoration: const InputDecoration(
                   border: UnderlineInputBorder(),
                 ),
-                style: Theme.of(context)
-                    .textTheme
-                    .titleSmall!
-                    .copyWith(color: kOtherColor),
+                style: TextStyle(
+                    color: Color.fromARGB(255, 52, 69, 165),
+                    fontWeight: FontWeight.w400),
               ),
               const PanelTitle(title: 'Medicine Type', isRequired: false),
               Padding(
@@ -254,6 +253,7 @@ class _NewEntryPageState extends State<NewEntryPage> {
     );
   }
 
+//the method to innitialize the error incase error handling
   void initializeErrorListen() {
     _newEntryBloc.errorState$!.listen((ErrorEntry error) {
       switch (error) {
@@ -277,12 +277,19 @@ class _NewEntryPageState extends State<NewEntryPage> {
       }
     });
   }
-
+//display error method
   void displayError(String error) {
     ScaffoldMessenger.of(context).showSnackBar(
       SnackBar(
-        backgroundColor: kOtherColor,
-        content: Text(error),
+        backgroundColor: Colors.red[400],
+        content: Center(
+          child: Text(error,
+          style: TextStyle(
+            color:Colors.white,
+            fontWeight: FontWeight.w300
+          )
+          ),
+        ),
         duration: const Duration(milliseconds: 2000),
       ),
     );
@@ -386,7 +393,7 @@ class _IntervalSelectionState extends State<IntervalSelection> {
                   fontWeight: FontWeight.w700)
           ),
           DropdownButton(
-            iconEnabledColor: kOtherColor,
+            iconEnabledColor: Color.fromARGB(255, 52, 69, 165),
             dropdownColor: kScaffoldColor,
             hint: _selected == 0
                 ? Text(
