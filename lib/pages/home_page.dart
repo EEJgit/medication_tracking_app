@@ -233,7 +233,10 @@ class MedicineCard extends StatelessWidget {
     if (medicine.medicineType == 'Bottle') {
       return Hero(
         tag: medicine.medicineName! + medicine.medicineType!,
-        child: SvgPicture.asset('assets/icons/bottle.svg'),
+        child: SvgPicture.asset(
+          'assets/icons/bottle.svg',
+          height: 50,
+        ),
       );
     } else if (medicine.medicineType == 'Pill') {
       return Hero(
@@ -248,14 +251,19 @@ class MedicineCard extends StatelessWidget {
     } else if (medicine.medicineType == 'Tablet') {
       return Hero(
         tag: medicine.medicineName! + medicine.medicineType!,
-        child: SvgPicture.asset('assets/icons/tablet.svg'),
+        child: SvgPicture.asset(
+          'assets/icons/tablet.svg',
+          height: 30,
+        ),
       );
     }
     //incase of no Icon for this
     return Hero(
       tag: medicine.medicineName! + medicine.medicineType!,
       child: Icon(
-        Icons.error
+        Icons.error,
+        size: 40,
+        color: Colors.red,
       ),
     );
   }
@@ -267,9 +275,26 @@ class MedicineCard extends StatelessWidget {
       splashColor: Colors.red,
       onTap: () {
         //go to the medication activity or screen.with an animation
-        Navigator.push(context,
+        /*Navigator.push(context,
             MaterialPageRoute(builder: (context) => MedicationDetails()));
-      },
+        */
+        Navigator.of(context).push(
+          PageRouteBuilder<void>(
+            pageBuilder: (BuildContext context, Animation<double> animation,
+                Animation<double> secondaryAnimation) {
+              return AnimatedBuilder(
+                animation: animation,
+                builder: (context, Widget? child) {
+                  return Opacity(
+                    opacity: animation.value,
+                    child: MedicationDetails(medicine,)
+                  );
+                },
+              );
+            },
+            transitionDuration: const Duration(milliseconds: 500),
+          ),
+        );      },
       child: Container(
         padding: EdgeInsets.only(
           left: 8.0,
@@ -292,20 +317,26 @@ class MedicineCard extends StatelessWidget {
             ),
             //this is the section for the medication's name.
             //This is the Hero Tag
-            Text(
-              medicine.medicineName!,
-              style: TextStyle(
-                  color: Color.fromARGB(255, 52, 69, 165),
-                  fontSize: 20,
-                  fontWeight: FontWeight.bold,
-                  letterSpacing: 2.0),
+            Hero(
+              tag: medicine.medicineName!,
+              child: Text(
+                medicine.medicineName!,
+                style: TextStyle(
+                    color: Color.fromARGB(255, 52, 69, 165),
+                    fontSize: 20,
+                    fontWeight: FontWeight.bold,
+                    overflow: TextOverflow.fade,
+                    letterSpacing: 2.0),
+              ),
             ),
             SizedBox(
               height: 2,
             ),
             //This is the section for the time interval.
             Text(
-             " ${medicine.interval!.toString()}  Hours",
+              medicine.interval == 1
+                  ? "Every ${medicine.interval}Hour"
+                  : "Every ${medicine.interval} Hours",
               style: TextStyle(
                   color: Colors.grey[400],
                   fontSize: 15,

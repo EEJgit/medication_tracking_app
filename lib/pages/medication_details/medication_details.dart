@@ -1,8 +1,14 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
+import 'package:medication_tracking_app/models/medicine.dart';
 
 class MedicationDetails extends StatefulWidget {
-  const MedicationDetails({super.key});
+  const MedicationDetails(
+    this.medicine, {
+    super.key,
+  });
+
+  final Medicine medicine;
 
   @override
   State<MedicationDetails> createState() => _MedicationDetailsState();
@@ -63,8 +69,8 @@ class _MedicationDetailsState extends State<MedicationDetails> {
       appBar: AppBar(
         title: const Text(
           "Medication Details",
-          style:TextStyle(
-            color:Colors.white,
+          style: TextStyle(
+            color: Colors.white,
           ),
         ),
       ),
@@ -73,7 +79,7 @@ class _MedicationDetailsState extends State<MedicationDetails> {
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
-            const MainSection(),
+            MainSection(medicine: widget.medicine,),
             //The extended tab for more information for the medication.
             const ExtendedSection(),
             const Spacer(),
@@ -122,7 +128,9 @@ class ExtendedSection extends StatelessWidget {
     return ListView(
       shrinkWrap: true,
       children: const [
-        SizedBox(height: 30,),
+        SizedBox(
+          height: 30,
+        ),
         ExtendedTabInfo(fieldTitle: "Medicine Type", fieldInfo: "Bottle"),
         ExtendedTabInfo(
             fieldTitle: "Dose Interval",
@@ -135,7 +143,9 @@ class ExtendedSection extends StatelessWidget {
 
 //MainTab information for the medication
 class MainSection extends StatelessWidget {
-  const MainSection({super.key});
+  const MainSection({super.key, this.medicine});
+  //the medicine variables
+  final Medicine? medicine;
 
   @override
   Widget build(BuildContext context) {
@@ -145,16 +155,20 @@ class MainSection extends StatelessWidget {
         SvgPicture.asset(
           "assets/icons/bottle.svg",
           height: 80,
-        ),
-        const Column(
+        ), Column(
           children: [
             //Medication Name details
             MedicationInfoTab(
-              fieldInfo: "Benlyne",
-              fieldTitle: 'Medication Name',
+            fieldInfo: medicine!.medicineName!,
+            fieldTitle: 'Medication Name',
             ),
+            
             //This is the medication Dosage details
-            MedicationInfoTab(fieldInfo: "200g", fieldTitle: "Dosage")
+            MedicationInfoTab(
+                fieldTitle: 'Dosage',
+                fieldInfo: medicine!.dosage == 0
+                    ? 'Not Specified'
+                    : "${medicine!.dosage} mg"),
           ],
         ),
       ],
@@ -219,11 +233,10 @@ class ExtendedTabInfo extends StatelessWidget {
         children: [
           Text(
             fieldTitle,
-            style:  TextStyle(
-              fontSize: 25,
-              color:Colors.grey[700],
-              fontWeight: FontWeight.bold
-            ),
+            style: TextStyle(
+                fontSize: 25,
+                color: Colors.grey[700],
+                fontWeight: FontWeight.bold),
           ),
           Text(
             fieldInfo,
