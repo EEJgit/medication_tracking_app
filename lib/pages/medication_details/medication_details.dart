@@ -1,6 +1,11 @@
+// ignore_for_file: prefer_const_constructors
+
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
+import 'package:medication_tracking_app/global_bloc.dart';
 import 'package:medication_tracking_app/models/medicine.dart';
+import 'package:medication_tracking_app/pages/home_page.dart';
+import 'package:provider/provider.dart';
 
 class MedicationDetails extends StatefulWidget {
   const MedicationDetails(
@@ -15,7 +20,8 @@ class MedicationDetails extends StatefulWidget {
 }
 
 class _MedicationDetailsState extends State<MedicationDetails> {
-  openAlertBox(BuildContext context) {
+ 
+  openAlertBox(BuildContext context, GlobalBloc _globalBloc) {
     // this is alert box for the deletion confirmation
     return showDialog(
         context: context,
@@ -49,6 +55,14 @@ class _MedicationDetailsState extends State<MedicationDetails> {
               TextButton(
                 onPressed: () {
                   //this is the global bloc to delete the  medication.
+                  _globalBloc.RemoveMedication(widget.medicine);
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                      builder: (context) => const HomePage(),
+                    ),
+                  );
+                  ;
                 },
                 child: Text(
                   "Ok",
@@ -62,9 +76,12 @@ class _MedicationDetailsState extends State<MedicationDetails> {
           );
         });
   }
+//we delete a medicine from memory
 
   @override
   Widget build(BuildContext context) {
+     //we delete medication from the
+    final GlobalBloc _globalBloc = Provider.of<GlobalBloc>(context);
     return Scaffold(
       appBar: AppBar(
         title: const Text(
@@ -79,9 +96,13 @@ class _MedicationDetailsState extends State<MedicationDetails> {
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
-            MainSection(medicine: widget.medicine,),
+            MainSection(
+              medicine: widget.medicine,
+            ),
             //The extended tab for more information for the medication.
-            const ExtendedSection(),
+            ExtendedSection(
+              medicine: widget.medicine,
+            ),
             const Spacer(),
             //the delete button
             SizedBox(
@@ -100,7 +121,7 @@ class _MedicationDetailsState extends State<MedicationDetails> {
                 ),
                 onPressed: () {
                   //open the alert dialog for the deletion notice. plus the global bloc to delete and manage the medication states.
-                  openAlertBox(context);
+                  openAlertBox(context,_globalBloc);
                 },
                 child: const Text(
                   "D E L E T E",
@@ -121,21 +142,32 @@ class _MedicationDetailsState extends State<MedicationDetails> {
 
 //Extended tab, which lays the medication info in a ListView
 class ExtendedSection extends StatelessWidget {
-  const ExtendedSection({super.key});
+  const ExtendedSection({super.key, this.medicine});
+  final Medicine? medicine;
 
   @override
   Widget build(BuildContext context) {
     return ListView(
       shrinkWrap: true,
-      children: const [
+      children: [
         SizedBox(
           height: 30,
         ),
-        ExtendedTabInfo(fieldTitle: "Medicine Type", fieldInfo: "Bottle"),
+        ExtendedTabInfo(
+          fieldTitle: "Medicine Type",
+          fieldInfo: medicine!.medicineType! == "None"
+              ? "Not specified"
+              : medicine!.medicineType!,
+        ),
         ExtendedTabInfo(
             fieldTitle: "Dose Interval",
-            fieldInfo: "Every 6 hours | 3 times a day"),
-        ExtendedTabInfo(fieldTitle: "Start Time", fieldInfo: "12:30")
+            fieldInfo:
+                "Every ${medicine!.interval} | ${medicine!.interval == 24 ? 'One time a Day' : '${(24 / medicine!.interval!).floor()} times a day'}"),
+        ExtendedTabInfo(
+          fieldTitle: "Start Time",
+          fieldInfo:
+              "${medicine!.startTime![0]}${medicine!.startTime![1]}:${medicine!.startTime![2]}${medicine!.startTime![3]}",
+        ),
       ],
     );
   }
@@ -148,8 +180,8 @@ class MainSection extends StatelessWidget {
   final Medicine? medicine;
 
   //The Hero Method
-  Hero makeIcon(){
-     if (medicine!.medicineType == 'Bottle') {
+  Hero makeIcon() {
+    if (medicine!.medicineType == 'Bottle') {
       return Hero(
         tag: medicine!.medicineName! + medicine!.medicineType!,
         child: SvgPicture.asset(
@@ -157,17 +189,17 @@ class MainSection extends StatelessWidget {
           height: 50,
         ),
       );
-    }else if(medicine!.medicineType == 'Pill'){
-       return Hero(
+    } else if (medicine!.medicineType == 'Pill') {
+      return Hero(
         tag: medicine!.medicineName! + medicine!.medicineType!,
         child: SvgPicture.asset('assets/icons/pill.svg'),
       );
-    }else if(medicine!.medicineType == 'Syringe'){
-       return Hero(
+    } else if (medicine!.medicineType == 'Syringe') {
+      return Hero(
         tag: medicine!.medicineName! + medicine!.medicineType!,
         child: SvgPicture.asset('assets/icons/syringe.svg'),
       );
-    }else if(medicine!.medicineType == 'Tablet') {
+    } else if (medicine!.medicineType == 'Tablet') {
       return Hero(
         tag: medicine!.medicineName! + medicine!.medicineType!,
         child: SvgPicture.asset(
@@ -178,7 +210,7 @@ class MainSection extends StatelessWidget {
     }
     return Hero(
       tag: medicine!.medicineName! + medicine!.medicineType!,
-      child:const Icon(
+      child: const Icon(
         Icons.error,
         size: 40,
         color: Colors.red,
@@ -191,8 +223,8 @@ class MainSection extends StatelessWidget {
     return Row(
       mainAxisAlignment: MainAxisAlignment.spaceAround,
       children: [
-          makeIcon()
-        , Column(
+        makeIcon(),
+        Column(
           children: [
             //Medication Name details
             Hero(
@@ -200,12 +232,12 @@ class MainSection extends StatelessWidget {
               child: Material(
                 color: Colors.transparent,
                 child: MedicationInfoTab(
-                fieldInfo: medicine!.medicineName!,
-                fieldTitle: 'Medication Name',
+                  fieldInfo: medicine!.medicineName!,
+                  fieldTitle: 'Medication Name',
                 ),
               ),
             ),
-            
+
             //This is the medication Dosage details
             MedicationInfoTab(
                 fieldTitle: 'Dosage',
