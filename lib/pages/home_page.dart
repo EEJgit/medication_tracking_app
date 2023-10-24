@@ -191,7 +191,7 @@ class BottomContainer extends StatelessWidget {
     );
     */
     final GlobalBloc globalBloc = Provider.of<GlobalBloc>(context);
-   return StreamBuilder(
+    return StreamBuilder(
       stream: globalBloc.medicineList$,
       builder: (context, snapshot) {
         if (!snapshot.hasData) {
@@ -203,15 +203,17 @@ class BottomContainer extends StatelessWidget {
               style: TextStyle(fontSize: 30, color: Colors.red[400]),
             ),
           );
-        }else{
-           return GridView.builder(
+        } else {
+          return GridView.builder(
             padding: EdgeInsets.only(top: 1),
             gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
               crossAxisCount: 2,
             ),
             itemCount: snapshot.data!.length,
             itemBuilder: (context, index) {
-              return MedicineCard();
+              return MedicineCard(
+                medicine: snapshot.data![index],
+              );
             },
           );
         }
@@ -222,7 +224,41 @@ class BottomContainer extends StatelessWidget {
 
 //The medication card
 class MedicineCard extends StatelessWidget {
-  const MedicineCard({super.key});
+  const MedicineCard({super.key, required this.medicine});
+  //This is the medication variables
+  final Medicine medicine;
+
+  //first we need tot get the medication type icon
+  Hero makeIcon() {
+    if (medicine.medicineType == 'Bottle') {
+      return Hero(
+        tag: medicine.medicineName! + medicine.medicineType!,
+        child: SvgPicture.asset('assets/icons/bottle.svg'),
+      );
+    } else if (medicine.medicineType == 'Pill') {
+      return Hero(
+        tag: medicine.medicineName! + medicine.medicineType!,
+        child: SvgPicture.asset('assets/icons/pill.svg'),
+      );
+    } else if (medicine.medicineType == 'Syringe') {
+      return Hero(
+        tag: medicine.medicineName! + medicine.medicineType!,
+        child: SvgPicture.asset('assets/icons/syringe.svg'),
+      );
+    } else if (medicine.medicineType == 'Tablet') {
+      return Hero(
+        tag: medicine.medicineName! + medicine.medicineType!,
+        child: SvgPicture.asset('assets/icons/tablet.svg'),
+      );
+    }
+    //incase of no Icon for this
+    return Hero(
+      tag: medicine.medicineName! + medicine.medicineType!,
+      child: Icon(
+        Icons.error
+      ),
+    );
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -249,17 +285,15 @@ class MedicineCard extends StatelessWidget {
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
             Spacer(),
-            SvgPicture.asset(
-              "assets/icons/bottle.svg",
-              height: 50,
-            ),
+            //call the Medication Type and Icon here
+            makeIcon(),
             SizedBox(
               height: 5,
             ),
             //this is the section for the medication's name.
             //This is the Hero Tag
             Text(
-              "Benlyne",
+              medicine.medicineName!,
               style: TextStyle(
                   color: Color.fromARGB(255, 52, 69, 165),
                   fontSize: 20,
@@ -271,7 +305,7 @@ class MedicineCard extends StatelessWidget {
             ),
             //This is the section for the time interval.
             Text(
-              "Every 8 hours",
+             " ${medicine.interval!.toString()}  Hours",
               style: TextStyle(
                   color: Colors.grey[400],
                   fontSize: 15,
