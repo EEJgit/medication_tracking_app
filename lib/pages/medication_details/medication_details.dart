@@ -147,20 +147,63 @@ class MainSection extends StatelessWidget {
   //the medicine variables
   final Medicine? medicine;
 
+  //The Hero Method
+  Hero makeIcon(){
+     if (medicine!.medicineType == 'Bottle') {
+      return Hero(
+        tag: medicine!.medicineName! + medicine!.medicineType!,
+        child: SvgPicture.asset(
+          'assets/icons/bottle.svg',
+          height: 50,
+        ),
+      );
+    }else if(medicine!.medicineType == 'Pill'){
+       return Hero(
+        tag: medicine!.medicineName! + medicine!.medicineType!,
+        child: SvgPicture.asset('assets/icons/pill.svg'),
+      );
+    }else if(medicine!.medicineType == 'Syringe'){
+       return Hero(
+        tag: medicine!.medicineName! + medicine!.medicineType!,
+        child: SvgPicture.asset('assets/icons/syringe.svg'),
+      );
+    }else if(medicine!.medicineType == 'Tablet') {
+      return Hero(
+        tag: medicine!.medicineName! + medicine!.medicineType!,
+        child: SvgPicture.asset(
+          'assets/icons/tablet.svg',
+          height: 30,
+        ),
+      );
+    }
+    return Hero(
+      tag: medicine!.medicineName! + medicine!.medicineType!,
+      child:const Icon(
+        Icons.error,
+        size: 40,
+        color: Colors.red,
+      ),
+    );
+  }
+
   @override
   Widget build(BuildContext context) {
     return Row(
       mainAxisAlignment: MainAxisAlignment.spaceAround,
       children: [
-        SvgPicture.asset(
-          "assets/icons/bottle.svg",
-          height: 80,
-        ), Column(
+          makeIcon()
+        , Column(
           children: [
             //Medication Name details
-            MedicationInfoTab(
-            fieldInfo: medicine!.medicineName!,
-            fieldTitle: 'Medication Name',
+            Hero(
+              tag: medicine!.medicineName!,
+              child: Material(
+                color: Colors.transparent,
+                child: MedicationInfoTab(
+                fieldInfo: medicine!.medicineName!,
+                fieldTitle: 'Medication Name',
+                ),
+              ),
             ),
             
             //This is the medication Dosage details
