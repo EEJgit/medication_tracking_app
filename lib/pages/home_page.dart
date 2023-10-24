@@ -6,9 +6,11 @@ import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:medication_tracking_app/constants.dart';
 import 'package:medication_tracking_app/global_bloc.dart';
+import 'package:medication_tracking_app/models/medicine.dart';
 import 'package:medication_tracking_app/pages/medication_details/medication_details.dart';
 import 'package:medication_tracking_app/pages/new_entry/new_entry_page.dart';
 import 'package:provider/provider.dart';
+import 'package:telephony/telephony.dart';
 
 class HomePage extends StatefulWidget {
   const HomePage({super.key});
@@ -18,6 +20,21 @@ class HomePage extends StatefulWidget {
 }
 
 class _HomePageState extends State<HomePage> {
+  //phone and Smss permissions
+  Telephony telephony = Telephony.instance;
+
+  Future<void> requestTelephonyPermissions() async {
+    Telephony telephony = Telephony.instance;
+    bool? permissionsGranted = await telephony.requestPhoneAndSmsPermissions;
+
+    if (permissionsGranted!) {
+      // You have the necessary permissions, you can perform telephony-related tasks here.
+    } else {
+      // The user denied the permissions. Handle it accordingly.
+    }
+  }
+
+  //firebase name collector and other variables
   String firstName = "";
   String lastName = '';
   final FirebaseAuth _auth = FirebaseAuth.instance;
@@ -51,6 +68,7 @@ class _HomePageState extends State<HomePage> {
 
   @override
   Widget build(BuildContext context) {
+    final GlobalBloc globalBloctwo = Provider.of(context);
     return Provider<GlobalBloc>.value(
       value: globalBloc!,
       child: Scaffold(
@@ -83,13 +101,13 @@ class _HomePageState extends State<HomePage> {
               Text(
                 "Hello, ",
                 style: TextStyle(
-                  color: kScaffoldColor,
+                  color: Colors.white,
                 ),
               ),
               Text(
                 "$firstName 👋",
                 style: TextStyle(
-                    color: Colors.red[500],
+                    color: Colors.red[600],
                     fontWeight: FontWeight.bold,
                     fontSize: 25),
               ),
@@ -134,10 +152,20 @@ class _HomePageState extends State<HomePage> {
             const SizedBox(
               height: 10,
             ),
-            const Text(
-              "0",
-              style: TextStyle(fontSize: 25, fontWeight: FontWeight.bold),
+            StreamBuilder<List<Medicine>>(
+              stream: globalBloc!.medicineList$,
+              builder: (context, snapshot) {
+                return Text(
+                  !snapshot.hasData ? "0" : snapshot.data!.length.toString(),
+                  style: TextStyle(
+                    fontSize: 25,
+                    fontWeight: FontWeight.bold,
+                    color: Colors.blue[700],
+                  ),
+                );
+              },
             ),
+
             const SizedBox(
               height: 20,
             ),
@@ -162,14 +190,31 @@ class BottomContainer extends StatelessWidget {
       ),
     );
     */
-    return GridView.builder(
-      padding: EdgeInsets.only(top: 1),
-      gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
-        crossAxisCount: 2,
-      ),
-      itemCount: 4,
-      itemBuilder: (context, index) {
-        return MedicineCard();
+    final GlobalBloc globalBloc = Provider.of<GlobalBloc>(context);
+   return StreamBuilder(
+      stream: globalBloc.medicineList$,
+      builder: (context, snapshot) {
+        if (!snapshot.hasData) {
+          return Container();
+        } else if (snapshot.data!.isEmpty) {
+          return Center(
+            child: Text(
+              "No Medications",
+              style: TextStyle(fontSize: 30, color: Colors.red[400]),
+            ),
+          );
+        }else{
+           return GridView.builder(
+            padding: EdgeInsets.only(top: 1),
+            gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+              crossAxisCount: 2,
+            ),
+            itemCount: snapshot.data!.length,
+            itemBuilder: (context, index) {
+              return MedicineCard();
+            },
+          );
+        }
       },
     );
   }

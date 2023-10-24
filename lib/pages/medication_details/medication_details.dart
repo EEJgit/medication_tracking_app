@@ -15,6 +15,7 @@ class _MedicationDetailsState extends State<MedicationDetails> {
         context: context,
         builder: (context) {
           return AlertDialog(
+            backgroundColor: Colors.white,
             shape: const RoundedRectangleBorder(
                 borderRadius: BorderRadius.only(
                     topLeft: Radius.circular(20.0),
@@ -35,18 +36,19 @@ class _MedicationDetailsState extends State<MedicationDetails> {
                   "Cancel",
                   style: TextStyle(
                     color: Color.fromARGB(255, 52, 69, 165),
+                    fontSize: 18,
                   ),
                 ),
               ),
               TextButton(
                 onPressed: () {
                   //this is the global bloc to delete the  medication.
-
                 },
                 child: Text(
                   "Ok",
                   style: TextStyle(
                     color: Colors.red[400],
+                    fontSize: 18,
                   ),
                 ),
               )
@@ -59,11 +61,17 @@ class _MedicationDetailsState extends State<MedicationDetails> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: const Text("Medicine Page"),
+        title: const Text(
+          "Medication Details",
+          style:TextStyle(
+            color:Colors.white,
+          ),
+        ),
       ),
       body: Padding(
         padding: const EdgeInsets.all(18.0),
         child: Column(
+          mainAxisAlignment: MainAxisAlignment.center,
           children: [
             const MainSection(),
             //The extended tab for more information for the medication.
@@ -114,7 +122,8 @@ class ExtendedSection extends StatelessWidget {
     return ListView(
       shrinkWrap: true,
       children: const [
-        ExtendedTabInfo(fieldTitle: "Medicine Type", fieldInfo: "Pillz"),
+        SizedBox(height: 30,),
+        ExtendedTabInfo(fieldTitle: "Medicine Type", fieldInfo: "Bottle"),
         ExtendedTabInfo(
             fieldTitle: "Dose Interval",
             fieldInfo: "Every 6 hours | 3 times a day"),
@@ -210,8 +219,10 @@ class ExtendedTabInfo extends StatelessWidget {
         children: [
           Text(
             fieldTitle,
-            style: const TextStyle(
-              fontSize: 16,
+            style:  TextStyle(
+              fontSize: 25,
+              color:Colors.grey[700],
+              fontWeight: FontWeight.bold
             ),
           ),
           Text(

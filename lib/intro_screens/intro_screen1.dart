@@ -1,36 +1,43 @@
 import 'package:flutter/material.dart';
 
 class IntroScreenOne extends StatelessWidget {
-  const IntroScreenOne({super.key});
+  const IntroScreenOne({Key? key});
 
   @override
   Widget build(BuildContext context) {
     return Container(
-      color: const Color.fromARGB(255, 52, 69, 165),
-      child: const Column(
+      color: Color(0xFF3455A5), // Professional blue color
+      child: Column(
         mainAxisAlignment: MainAxisAlignment.center,
-        children: [
-            SizedBox(height: 50),
-            Text("ForgetFul? Not anymore.",
+        children: const [
+          SizedBox(height: 50),
+          Icon(
+            Icons.local_hospital, // Replace with a relevant medical icon
+            size: 80,
+            color: Colors.white,
+          ),
+          SizedBox(height: 20),
+          Text(
+            "Medication Tracker",
             style: TextStyle(
-              fontSize: 26,
-              fontWeight: FontWeight.w500,
-              color: Colors.white
-            ),),
-            Text(
-            "Get Notified",
-            style: TextStyle(
+              fontSize: 28,
               fontWeight: FontWeight.bold,
-              fontSize: 25,
-              color: Colors.white
+              color: Colors.white,
+            ),
+          ),
+          Padding(
+            padding: EdgeInsets.symmetric(horizontal: 20.0),
+            child: Text(
+              "Never miss a dose. Stay on top of your medication schedule.",
+              textAlign: TextAlign.center,
+              style: TextStyle(
+                fontSize: 18,
+                color: Colors.white,
+              ),
             ),
           ),
         ],
       ),
-      /*Image.asset(
-                  './assets/images/doc.png',
-                  height: 40.0,
-                ));*/
     );
   }
 }

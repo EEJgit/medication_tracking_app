@@ -253,7 +253,7 @@ class _NewEntryPageState extends State<NewEntryPage> {
     );
   }
 
-//the method to innitialize the error incase error handling
+//the method to initialize the error incase error handling
   void initializeErrorListen() {
     _newEntryBloc.errorState$!.listen((ErrorEntry error) {
       switch (error) {
