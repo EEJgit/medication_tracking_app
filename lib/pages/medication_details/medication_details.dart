@@ -1,5 +1,7 @@
 // ignore_for_file: prefer_const_constructors
 
+import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:medication_tracking_app/global_bloc.dart';
@@ -20,7 +22,30 @@ class MedicationDetails extends StatefulWidget {
 }
 
 class _MedicationDetailsState extends State<MedicationDetails> {
- 
+  //firebase name collector and other variables
+  String firstName = "";
+  String lastName = '';
+  final FirebaseAuth _auth = FirebaseAuth.instance;
+  final FirebaseFirestore _firestore = FirebaseFirestore.instance;
+
+  void fetchUserData() async {
+    final user = _auth.currentUser;
+    if (user != null) {
+      final doc = await _firestore.collection('users').doc(user.email).get();
+      if (doc.exists) {
+        setState(() {
+          firstName = doc.get('first name');
+          lastName = doc.get('last name');
+        });
+      }
+    }
+  }
+
+  void initState() {
+    super.initState();
+    fetchUserData();
+  }
+
   openAlertBox(BuildContext context, GlobalBloc globalBloc) {
     // this is alert box for the deletion confirmation
     return showDialog(
@@ -79,14 +104,15 @@ class _MedicationDetailsState extends State<MedicationDetails> {
 
   @override
   Widget build(BuildContext context) {
-     //we delete medication from the
+    //we delete medication from the
     final GlobalBloc globalBloc = Provider.of<GlobalBloc>(context);
     return Scaffold(
       appBar: AppBar(
-        title: const Text(
-          "Medication Details",
+        title: Text(
+          "${firstName}'s Medication Details",
           style: TextStyle(
             color: Colors.white,
+            fontWeight: FontWeight.w100,
           ),
         ),
       ),
@@ -120,7 +146,7 @@ class _MedicationDetailsState extends State<MedicationDetails> {
                 ),
                 onPressed: () {
                   //open the alert dialog for the deletion notice. plus the global bloc to delete and manage the medication states.
-                  openAlertBox(context,globalBloc);
+                  openAlertBox(context, globalBloc);
                 },
                 child: const Text(
                   "D E L E T E",
@@ -183,24 +209,26 @@ class MainSection extends StatelessWidget {
     if (medicine!.medicineType == 'Bottle') {
       return Hero(
         tag: medicine!.medicineName! + medicine!.medicineType!,
-        child: SvgPicture.asset( height: 70,
+        child: SvgPicture.asset(
+          height: 70,
           'assets/icons/bottle.svg',
         ),
       );
     } else if (medicine!.medicineType == 'Pill') {
       return Hero(
         tag: medicine!.medicineName! + medicine!.medicineType!,
-        child: SvgPicture.asset( height: 70,'assets/icons/pill.svg'),
+        child: SvgPicture.asset(height: 70, 'assets/icons/pill.svg'),
       );
     } else if (medicine!.medicineType == 'Syringe') {
       return Hero(
         tag: medicine!.medicineName! + medicine!.medicineType!,
-        child: SvgPicture.asset( height: 70,'assets/icons/syringe.svg'),
+        child: SvgPicture.asset(height: 70, 'assets/icons/syringe.svg'),
       );
     } else if (medicine!.medicineType == 'Tablet') {
       return Hero(
         tag: medicine!.medicineName! + medicine!.medicineType!,
-        child: SvgPicture.asset( height: 70,
+        child: SvgPicture.asset(
+          height: 70,
           'assets/icons/tablet.svg',
         ),
       );

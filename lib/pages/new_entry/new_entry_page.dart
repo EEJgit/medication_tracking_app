@@ -55,12 +55,10 @@ class _NewEntryPageState extends State<NewEntryPage> {
       key: _scaffoldKey,
       resizeToAvoidBottomInset: false,
       appBar: AppBar(
-        title: const Text(
-          'Add New',
-          style: TextStyle(
-            color:Colors.white,
-          )
-        ),
+        title: const Text('Add New',
+            style: TextStyle(
+              color: Colors.white,
+            )),
       ),
       body: Provider<NewEntryBloc>.value(
         value: _newEntryBloc,
@@ -84,9 +82,8 @@ class _NewEntryPageState extends State<NewEntryPage> {
                   border: UnderlineInputBorder(),
                 ),
                 style: TextStyle(
-                  color:Color.fromARGB(255, 52, 69, 165),
-                  fontWeight: FontWeight.w400
-                ),
+                    color: Color.fromARGB(255, 52, 69, 165),
+                    fontWeight: FontWeight.w400),
               ),
               const PanelTitle(
                 title: 'Dosage in mg',
@@ -148,7 +145,9 @@ class _NewEntryPageState extends State<NewEntryPage> {
                   },
                 ),
               ),
-              SizedBox(height: 2,),
+              SizedBox(
+                height: 2,
+              ),
               const PanelTitle(title: 'Interval Selection', isRequired: true),
               const IntervalSelection(),
               const PanelTitle(title: 'Starting Time', isRequired: true),
@@ -277,6 +276,7 @@ class _NewEntryPageState extends State<NewEntryPage> {
       }
     });
   }
+
 //display error method
   void displayError(String error) {
     ScaffoldMessenger.of(context).showSnackBar(
@@ -284,11 +284,8 @@ class _NewEntryPageState extends State<NewEntryPage> {
         backgroundColor: Colors.red[400],
         content: Center(
           child: Text(error,
-          style: TextStyle(
-            color:Colors.white,
-            fontWeight: FontWeight.w300
-          )
-          ),
+              style:
+                  TextStyle(color: Colors.white, fontWeight: FontWeight.w300)),
         ),
         duration: const Duration(milliseconds: 2000),
       ),
@@ -317,6 +314,10 @@ class _SelectTimeState extends State<SelectTime> {
   bool _clicked = false;
 
   Future<TimeOfDay> _selectTime(BuildContext context) async {
+    //Time bug fix
+    NewEntryBloc newEntryBloc =
+        Provider.of<NewEntryBloc>(context, listen: false);
+    //The bug fix ends here
     final TimeOfDay? picked = await showTimePicker(
       context: context,
       initialTime: timeOfDay,
@@ -325,6 +326,10 @@ class _SelectTimeState extends State<SelectTime> {
       setState(() {
         timeOfDay = picked;
         _clicked = true;
+        //The time state provider
+        newEntryBloc.updateTime(
+          convertTime(timeOfDay.hour.toString()) + convertTime(timeOfDay.minute.toString())
+        );
       });
     }
     return picked!;
@@ -385,24 +390,19 @@ class _IntervalSelectionState extends State<IntervalSelection> {
       child: Row(
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
         children: [
-          Text(
-            'Remind me every',
-            style: TextStyle(
-              color: Colors.grey[600],
-              fontSize: 18,
-                  fontWeight: FontWeight.w700)
-          ),
+          Text('Remind me every',
+              style: TextStyle(
+                  color: Colors.grey[600],
+                  fontSize: 18,
+                  fontWeight: FontWeight.w700)),
           DropdownButton(
             iconEnabledColor: Color.fromARGB(255, 52, 69, 165),
             dropdownColor: kScaffoldColor,
             hint: _selected == 0
-                ? Text(
-                    'Select an Interval',
+                ? Text('Select an Interval',
                     style: TextStyle(
-                      color: Color.fromARGB(255, 52, 69, 165),
-                      fontWeight: FontWeight.w700
-                    )
-                  )
+                        color: Color.fromARGB(255, 52, 69, 165),
+                        fontWeight: FontWeight.w700))
                 : null,
             elevation: 4,
             value: _selected == 0 ? null : _selected,
@@ -410,13 +410,10 @@ class _IntervalSelectionState extends State<IntervalSelection> {
               (int value) {
                 return DropdownMenuItem<int>(
                   value: value,
-                  child: Text(
-                    value.toString(),
-                    style: TextStyle(
-                      color: Color.fromARGB(255, 52, 69, 165),
-                      fontWeight: FontWeight.w300
-                    )
-                  ),
+                  child: Text(value.toString(),
+                      style: TextStyle(
+                          color: Color.fromARGB(255, 52, 69, 165),
+                          fontWeight: FontWeight.w300)),
                 );
               },
             ).toList(),
@@ -470,7 +467,9 @@ class MedicineTypeColumn extends StatelessWidget {
             alignment: Alignment.center,
             decoration: BoxDecoration(
                 borderRadius: BorderRadius.circular(18),
-                color: isSelected ?  Color.fromARGB(255, 52, 69, 165) : Colors.white),
+                color: isSelected
+                    ? Color.fromARGB(255, 52, 69, 165)
+                    : Colors.white),
             child: Center(
               child: Padding(
                 padding: const EdgeInsets.only(
@@ -490,14 +489,18 @@ class MedicineTypeColumn extends StatelessWidget {
               width: 75,
               height: 21,
               decoration: BoxDecoration(
-                color: isSelected ?  Color.fromARGB(255, 52, 69, 165) : Colors.white,
+                color: isSelected
+                    ? Color.fromARGB(255, 52, 69, 165)
+                    : Colors.white,
                 borderRadius: BorderRadius.circular(8),
               ),
               child: Center(
                 child: Text(
                   name,
                   style: TextStyle(
-                    color: isSelected ? Colors.grey[200] :  Color.fromARGB(255, 52, 69, 165),
+                    color: isSelected
+                        ? Colors.grey[200]
+                        : Color.fromARGB(255, 52, 69, 165),
                     fontWeight: FontWeight.w700,
                   ),
                 ),
@@ -524,9 +527,9 @@ class PanelTitle extends StatelessWidget {
           children: <TextSpan>[
             TextSpan(
               text: title,
-              style:const TextStyle(
-                fontSize:18 ,
-                color:  Color.fromARGB(255, 52, 69, 165),
+              style: const TextStyle(
+                fontSize: 18,
+                color: Color.fromARGB(255, 52, 69, 165),
                 fontWeight: FontWeight.w500,
               ),
             ),
