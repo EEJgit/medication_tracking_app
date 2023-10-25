@@ -1,5 +1,6 @@
 // ignore_for_file: prefer_const_constructors
 
+import 'package:awesome_notifications/awesome_notifications.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
@@ -59,6 +60,12 @@ class _HomePageState extends State<HomePage> {
     super.initState();
     globalBloc = GlobalBloc();
     fetchUserData();
+    //awesome Notifications
+    AwesomeNotifications().isNotificationAllowed().then((isAllowed) {
+      if (!isAllowed) {
+        AwesomeNotifications().requestPermissionToSendNotifications();
+      }
+    });
   }
 
   void signOut() {
@@ -225,8 +232,9 @@ class MedicineCard extends StatelessWidget {
   const MedicineCard({super.key, required this.medicine});
   //This is the medication variables
   final Medicine medicine;
+  
 
-  //first we need tot get the medication type icon
+  //first we need to get the medication type icon
   Hero makeIcon() {
     if (medicine.medicineType == 'Bottle') {
       return Hero(
@@ -239,12 +247,18 @@ class MedicineCard extends StatelessWidget {
     } else if (medicine.medicineType == 'Pill') {
       return Hero(
         tag: medicine.medicineName! + medicine.medicineType!,
-        child: SvgPicture.asset('assets/icons/pill.svg',height: 50,),
+        child: SvgPicture.asset(
+          'assets/icons/pill.svg',
+          height: 50,
+        ),
       );
     } else if (medicine.medicineType == 'Syringe') {
       return Hero(
         tag: medicine.medicineName! + medicine.medicineType!,
-        child: SvgPicture.asset('assets/icons/syringe.svg', height: 50,),
+        child: SvgPicture.asset(
+          'assets/icons/syringe.svg',
+          height: 50,
+        ),
       );
     } else if (medicine.medicineType == 'Tablet') {
       return Hero(
@@ -284,15 +298,17 @@ class MedicineCard extends StatelessWidget {
                 animation: animation,
                 builder: (context, Widget? child) {
                   return Opacity(
-                    opacity: animation.value,
-                    child: MedicationDetails(medicine,)
-                  );
+                      opacity: animation.value,
+                      child: MedicationDetails(
+                        medicine,
+                      ));
                 },
               );
             },
             transitionDuration: const Duration(milliseconds: 500),
           ),
-        );      },
+        );
+      },
       child: Container(
         padding: EdgeInsets.only(
           left: 8.0,

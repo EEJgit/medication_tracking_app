@@ -6,12 +6,14 @@ import 'package:flutter_local_notifications/flutter_local_notifications.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:medication_tracking_app/constants.dart';
 import 'package:medication_tracking_app/global_bloc.dart';
+import 'package:medication_tracking_app/local%20notifications/local_notifications.dart';
 import 'package:medication_tracking_app/models/errors.dart';
 import 'package:medication_tracking_app/models/medication_type.dart';
 import 'package:medication_tracking_app/models/medicine.dart';
 import 'package:medication_tracking_app/pages/new_entry/new_entry_bloc.dart';
 import 'package:medication_tracking_app/success_screen/success_scren.dart';
 
+import 'package:flutter_local_notifications/flutter_local_notifications.dart';
 import 'package:provider/provider.dart';
 import '../../common/convert_time.dart';
 
@@ -235,7 +237,10 @@ class _NewEntryPageState extends State<NewEntryPage> {
                       globalBloc.updateMedicineList(newEntryMedicine);
 
                       //schedule notification
-
+                      LocalNotifications.showSimpleNotification(
+                          title: "Mambwe", 
+                          body: "${medicineName} Saved! To be Taken at ${startTime}", 
+                          payload: "This is a simple test");
                       //Move to the next success screen
                       Navigator.push(
                           context,
@@ -251,6 +256,9 @@ class _NewEntryPageState extends State<NewEntryPage> {
       ),
     );
   }
+  //##############################################
+  //##############################################
+  //time to schedule notifications
 
 //the method to initialize the error incase error handling
   void initializeErrorListen() {
@@ -327,9 +335,8 @@ class _SelectTimeState extends State<SelectTime> {
         timeOfDay = picked;
         _clicked = true;
         //The time state provider
-        newEntryBloc.updateTime(
-          convertTime(timeOfDay.hour.toString()) + convertTime(timeOfDay.minute.toString())
-        );
+        newEntryBloc.updateTime(convertTime(timeOfDay.hour.toString()) +
+            convertTime(timeOfDay.minute.toString()));
       });
     }
     return picked!;

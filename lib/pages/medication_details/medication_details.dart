@@ -41,6 +41,7 @@ class _MedicationDetailsState extends State<MedicationDetails> {
     }
   }
 
+  @override
   void initState() {
     super.initState();
     fetchUserData();
@@ -109,7 +110,7 @@ class _MedicationDetailsState extends State<MedicationDetails> {
     return Scaffold(
       appBar: AppBar(
         title: Text(
-          "${firstName}'s Medication Details",
+          "$firstName's Medication Details",
           style: TextStyle(
             color: Colors.white,
             fontWeight: FontWeight.w100,
