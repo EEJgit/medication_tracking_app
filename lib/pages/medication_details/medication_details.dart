@@ -55,7 +55,7 @@ class _MedicationDetailsState extends State<MedicationDetails> {
               TextButton(
                 onPressed: () {
                   //this is the global bloc to delete the  medication.
-                  globalBloc.RemoveMedication(widget.medicine);
+                  globalBloc.removeMedication(widget.medicine);
                   Navigator.push(
                     context,
                     MaterialPageRoute(

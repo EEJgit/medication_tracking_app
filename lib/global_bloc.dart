@@ -51,7 +51,7 @@ class GlobalBloc {
     }
   }
 
-  Future RemoveMedication(Medicine tobeRemoved) async {
+  Future removeMedication(Medicine tobeRemoved) async {
     SharedPreferences sharedUser = await SharedPreferences.getInstance();
     List<String> medicineJsonList = [];
 

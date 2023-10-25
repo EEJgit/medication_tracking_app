@@ -67,7 +67,6 @@ class _HomePageState extends State<HomePage> {
 
   @override
   Widget build(BuildContext context) {
-    final GlobalBloc globalBloctwo = Provider.of(context);
     return Provider<GlobalBloc>.value(
       value: globalBloc!,
       child: Scaffold(
