@@ -1,15 +1,15 @@
 import 'package:flutter/material.dart';
 
 class IntroScreenOne extends StatelessWidget {
-  const IntroScreenOne({Key? key});
+  const IntroScreenOne({super.key, });
 
   @override
   Widget build(BuildContext context) {
     return Container(
-      color: Color(0xFF3455A5), // Professional blue color
-      child: Column(
+      color: const Color(0xFF3455A5), // Professional blue color
+      child: const Column(
         mainAxisAlignment: MainAxisAlignment.center,
-        children: const [
+        children: [
           SizedBox(height: 50),
           Icon(
             Icons.local_hospital, // Replace with a relevant medical icon

@@ -4,7 +4,6 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
-import 'package:medication_tracking_app/constants.dart';
 import 'package:medication_tracking_app/global_bloc.dart';
 import 'package:medication_tracking_app/models/medicine.dart';
 import 'package:medication_tracking_app/pages/medication_details/medication_details.dart';
@@ -20,7 +19,7 @@ class HomePage extends StatefulWidget {
 }
 
 class _HomePageState extends State<HomePage> {
-  //phone and Smss permissions
+  //phone and  permissions
   Telephony telephony = Telephony.instance;
 
   Future<void> requestTelephonyPermissions() async {
@@ -241,19 +240,19 @@ class MedicineCard extends StatelessWidget {
     } else if (medicine.medicineType == 'Pill') {
       return Hero(
         tag: medicine.medicineName! + medicine.medicineType!,
-        child: SvgPicture.asset('assets/icons/pill.svg'),
+        child: SvgPicture.asset('assets/icons/pill.svg',height: 50,),
       );
     } else if (medicine.medicineType == 'Syringe') {
       return Hero(
         tag: medicine.medicineName! + medicine.medicineType!,
-        child: SvgPicture.asset('assets/icons/syringe.svg'),
+        child: SvgPicture.asset('assets/icons/syringe.svg', height: 50,),
       );
     } else if (medicine.medicineType == 'Tablet') {
       return Hero(
         tag: medicine.medicineName! + medicine.medicineType!,
         child: SvgPicture.asset(
           'assets/icons/tablet.svg',
-          height: 30,
+          height: 50,
         ),
       );
     }

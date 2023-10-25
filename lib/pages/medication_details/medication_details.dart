@@ -21,7 +21,7 @@ class MedicationDetails extends StatefulWidget {
 
 class _MedicationDetailsState extends State<MedicationDetails> {
  
-  openAlertBox(BuildContext context, GlobalBloc _globalBloc) {
+  openAlertBox(BuildContext context, GlobalBloc globalBloc) {
     // this is alert box for the deletion confirmation
     return showDialog(
         context: context,
@@ -55,14 +55,13 @@ class _MedicationDetailsState extends State<MedicationDetails> {
               TextButton(
                 onPressed: () {
                   //this is the global bloc to delete the  medication.
-                  _globalBloc.RemoveMedication(widget.medicine);
+                  globalBloc.RemoveMedication(widget.medicine);
                   Navigator.push(
                     context,
                     MaterialPageRoute(
                       builder: (context) => const HomePage(),
                     ),
                   );
-                  ;
                 },
                 child: Text(
                   "Ok",
@@ -81,7 +80,7 @@ class _MedicationDetailsState extends State<MedicationDetails> {
   @override
   Widget build(BuildContext context) {
      //we delete medication from the
-    final GlobalBloc _globalBloc = Provider.of<GlobalBloc>(context);
+    final GlobalBloc globalBloc = Provider.of<GlobalBloc>(context);
     return Scaffold(
       appBar: AppBar(
         title: const Text(
@@ -121,7 +120,7 @@ class _MedicationDetailsState extends State<MedicationDetails> {
                 ),
                 onPressed: () {
                   //open the alert dialog for the deletion notice. plus the global bloc to delete and manage the medication states.
-                  openAlertBox(context,_globalBloc);
+                  openAlertBox(context,globalBloc);
                 },
                 child: const Text(
                   "D E L E T E",
@@ -184,27 +183,25 @@ class MainSection extends StatelessWidget {
     if (medicine!.medicineType == 'Bottle') {
       return Hero(
         tag: medicine!.medicineName! + medicine!.medicineType!,
-        child: SvgPicture.asset(
+        child: SvgPicture.asset( height: 70,
           'assets/icons/bottle.svg',
-          height: 50,
         ),
       );
     } else if (medicine!.medicineType == 'Pill') {
       return Hero(
         tag: medicine!.medicineName! + medicine!.medicineType!,
-        child: SvgPicture.asset('assets/icons/pill.svg'),
+        child: SvgPicture.asset( height: 70,'assets/icons/pill.svg'),
       );
     } else if (medicine!.medicineType == 'Syringe') {
       return Hero(
         tag: medicine!.medicineName! + medicine!.medicineType!,
-        child: SvgPicture.asset('assets/icons/syringe.svg'),
+        child: SvgPicture.asset( height: 70,'assets/icons/syringe.svg'),
       );
     } else if (medicine!.medicineType == 'Tablet') {
       return Hero(
         tag: medicine!.medicineName! + medicine!.medicineType!,
-        child: SvgPicture.asset(
+        child: SvgPicture.asset( height: 70,
           'assets/icons/tablet.svg',
-          height: 30,
         ),
       );
     }

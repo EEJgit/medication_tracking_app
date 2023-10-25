@@ -1,8 +1,10 @@
+// ignore_for_file: constant_identifier_names
+
 enum MedicineType{
-  bottle,
-  injection,
-  pill,
-  syringe,
-  tablet,
-  none,
+  Bottle,
+  Injection,
+  Pill,
+  Syringe,
+  Tablet,
+  None,
 }

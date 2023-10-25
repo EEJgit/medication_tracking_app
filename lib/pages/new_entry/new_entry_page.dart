@@ -116,31 +116,31 @@ class _NewEntryPageState extends State<NewEntryPage> {
                       children: [
                         //not yet clickable?
                         MedicineTypeColumn(
-                            medicineType: MedicineType.bottle,
+                            medicineType: MedicineType.Bottle,
                             name: 'Bottle',
                             iconValue: 'assets/icons/bottle.svg',
-                            isSelected: snapshot.data == MedicineType.bottle
+                            isSelected: snapshot.data == MedicineType.Bottle
                                 ? true
                                 : false),
                         MedicineTypeColumn(
-                            medicineType: MedicineType.pill,
+                            medicineType: MedicineType.Pill,
                             name: 'Pill',
                             iconValue: 'assets/icons/pill.svg',
-                            isSelected: snapshot.data == MedicineType.pill
+                            isSelected: snapshot.data == MedicineType.Pill
                                 ? true
                                 : false),
                         MedicineTypeColumn(
-                            medicineType: MedicineType.syringe,
+                            medicineType: MedicineType.Syringe,
                             name: 'Syringe',
                             iconValue: 'assets/icons/syringe.svg',
-                            isSelected: snapshot.data == MedicineType.syringe
+                            isSelected: snapshot.data == MedicineType.Syringe
                                 ? true
                                 : false),
                         MedicineTypeColumn(
-                            medicineType: MedicineType.tablet,
+                            medicineType: MedicineType.Tablet,
                             name: 'Tablet',
                             iconValue: 'assets/icons/tablet.svg',
-                            isSelected: snapshot.data == MedicineType.tablet
+                            isSelected: snapshot.data == MedicineType.Tablet
                                 ? true
                                 : false),
                       ],
