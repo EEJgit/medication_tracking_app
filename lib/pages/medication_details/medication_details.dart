@@ -5,6 +5,7 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:medication_tracking_app/global_bloc.dart';
+import 'package:medication_tracking_app/local%20notifications/local_notifications.dart';
 import 'package:medication_tracking_app/models/medicine.dart';
 import 'package:medication_tracking_app/pages/home_page.dart';
 import 'package:provider/provider.dart';
@@ -88,6 +89,8 @@ class _MedicationDetailsState extends State<MedicationDetails> {
                       builder: (context) => const HomePage(),
                     ),
                   );
+                    //notification closer
+                  LocalNotifications.closeAll();
                 },
                 child: Text(
                   "Ok",
@@ -148,6 +151,8 @@ class _MedicationDetailsState extends State<MedicationDetails> {
                 onPressed: () {
                   //open the alert dialog for the deletion notice. plus the global bloc to delete and manage the medication states.
                   openAlertBox(context, globalBloc);
+
+                
                 },
                 child: const Text(
                   "D E L E T E",

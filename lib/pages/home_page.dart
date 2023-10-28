@@ -9,6 +9,7 @@ import 'package:medication_tracking_app/global_bloc.dart';
 import 'package:medication_tracking_app/models/medicine.dart';
 import 'package:medication_tracking_app/pages/medication_details/medication_details.dart';
 import 'package:medication_tracking_app/pages/new_entry/new_entry_page.dart';
+import 'package:medication_tracking_app/side_bar/user_drawer.dart';
 import 'package:provider/provider.dart';
 import 'package:telephony/telephony.dart';
 
@@ -20,6 +21,10 @@ class HomePage extends StatefulWidget {
 }
 
 class _HomePageState extends State<HomePage> {
+  
+  //interactions
+  
+
   //phone and  permissions
   Telephony telephony = Telephony.instance;
 
@@ -100,6 +105,7 @@ class _HomePageState extends State<HomePage> {
               )),
         ),
         backgroundColor: Colors.grey[200],
+        drawer: UserDrawer(),
         appBar: AppBar(
           title: Row(
             children: [
@@ -232,7 +238,6 @@ class MedicineCard extends StatelessWidget {
   const MedicineCard({super.key, required this.medicine});
   //This is the medication variables
   final Medicine medicine;
-  
 
   //first we need to get the medication type icon
   Hero makeIcon() {

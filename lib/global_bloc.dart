@@ -1,6 +1,4 @@
 import 'dart:convert';
-
-import 'package:flutter_local_notifications/flutter_local_notifications.dart';
 import 'package:medication_tracking_app/models/medicine.dart';
 import 'package:rxdart/subjects.dart';
 
@@ -54,9 +52,9 @@ class GlobalBloc {
 
   Future removeMedication(Medicine tobeRemoved) async {
 
-    FlutterLocalNotificationsPlugin flutterLocalNotificationsPlugin =
+   /* FlutterLocalNotificationsPlugin flutterLocalNotificationsPlugin =
         FlutterLocalNotificationsPlugin();
-
+        */
     SharedPreferences sharedUser = await SharedPreferences.getInstance();
     List<String> medicineJsonList = [];
 
