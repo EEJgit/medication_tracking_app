@@ -115,7 +115,7 @@ void main() async {
   WidgetsFlutterBinding.ensureInitialized();
   await Firebase.initializeApp(options: DefaultFirebaseOptions.currentPlatform);
   await SharedPreferences.getInstance();
-  FirebaseMessaging.onBackgroundMessage(_firebasePushHandler);
+  //FirebaseMessaging.onBackgroundMessage(_firebasePushHandler);
   await FirebaseApi()
       .initNotification(); //call the firebaseNotificatiosn method from the firebase_api file
   //flutter notifications second try
@@ -129,8 +129,8 @@ void main() async {
   //we schedule here
   cron.schedule(Schedule.parse('*/1 * * * *'), () async {
    print('every 1');
-    //scheduleSMSSend();
-    //await sendEmail();
+    scheduleSMSSend();
+   // await sendEmail();
   });
 
   ///cron ends here
@@ -150,7 +150,7 @@ void main() async {
   //The android alarm sending sms try out
   await AndroidAlarmManager.initialize();
    //Schedule the SMS sending function
-  scheduleSMSSend();
+  //scheduleSMSSend();
 
   //Time Methods
   tz.initializeTimeZones();

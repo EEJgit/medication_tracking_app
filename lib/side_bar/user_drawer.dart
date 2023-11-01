@@ -3,8 +3,10 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:medication_tracking_app/side_bar/interactions_tracking.dart';
 import 'package:medication_tracking_app/side_bar/medication_interactions.dart';
 import 'package:medication_tracking_app/side_bar/next_of_kin.dart';
+import 'package:medication_tracking_app/side_bar/pharmacy_map.dart';
 
 class UserDrawer extends StatefulWidget {
   const UserDrawer({super.key});
@@ -57,11 +59,31 @@ class _UserDrawerState extends State<UserDrawer> {
     Navigator.push(
       context,
       MaterialPageRoute(
-        builder: (context) =>  MedicationInteractionScreen()
+        builder: (context) =>  MedicationInteractionScreen(),
       ),
     );
   }
 
+///User Medicatiion Interactions
+  void interactionsTracking() {
+    Navigator.push(
+      context,
+      MaterialPageRoute(
+        builder: (context) => InteractionsPage(),
+      ),
+    );
+  }
+
+  ///User Medicatiion Interactions
+  void pharmacyMap() {
+    Navigator.push(
+      context,
+      MaterialPageRoute(
+        builder: (context) => PharmacyMap(),
+      ),
+    );
+    
+  }
   @override
   Widget build(BuildContext context) {
     return SafeArea(
@@ -115,7 +137,7 @@ class _UserDrawerState extends State<UserDrawer> {
                     ),
                   ),
                   Text(
-                    "Medication",
+                    "Medication News",
                     style: TextStyle(
                       color: Colors.blue[900],
                       fontSize: 18,
@@ -125,7 +147,54 @@ class _UserDrawerState extends State<UserDrawer> {
                 ],
               ),
               
-            )
+            ),
+            GestureDetector(
+              onTap: interactionsTracking,
+              child: Row(
+                children: [
+                  IconButton(
+                    onPressed: interactionsTracking,
+                    icon: Icon(
+                      Icons.watch,
+                      color: Colors.blue[900],
+                      size: 30,
+                    ),
+                  ),
+                  Text(
+                    "Interactions Search",
+                    style: TextStyle(
+                      color: Colors.blue[900],
+                      fontSize: 18,
+                      fontWeight: FontWeight.bold,
+                    ),
+                  ),
+                ],
+              ),
+            ),
+
+            GestureDetector(
+              onTap: pharmacyMap,
+              child: Row(
+                children: [
+                  IconButton(
+                    onPressed: pharmacyMap,
+                    icon: Icon(
+                      Icons.watch,
+                      color: Colors.blue[900],
+                      size: 30,
+                    ),
+                  ),
+                  Text(
+                    "Pharmacy Map",
+                    style: TextStyle(
+                      color: Colors.blue[900],
+                      fontSize: 18,
+                      fontWeight: FontWeight.bold,
+                    ),
+                  ),
+                ],
+              ),
+            ),
           ],
         ),
       ),

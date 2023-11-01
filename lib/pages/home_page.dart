@@ -21,9 +21,7 @@ class HomePage extends StatefulWidget {
 }
 
 class _HomePageState extends State<HomePage> {
-  
   //interactions
-  
 
   //phone and  permissions
   Telephony telephony = Telephony.instance;
@@ -77,6 +75,24 @@ class _HomePageState extends State<HomePage> {
     _auth.signOut();
   }
 
+//WWWWWWWWWWWWWWCarousel images links
+  final urlImages = [
+    'Welcome To MadSense',
+    'OneE',
+    'Two'
+  ];
+
+  Widget buildImage(String urlImage, int index) => Container(
+        margin: EdgeInsets.symmetric(horizontal: 12),
+        
+        width: double.infinity,
+        decoration: BoxDecoration(
+          borderRadius: BorderRadius.circular(10),
+          color: Colors.blue[800],
+        ),
+        child: Center(child: Text(urlImage,style:TextStyle(fontSize: 30),)),
+      );
+//Carousel implementation ends here
   @override
   Widget build(BuildContext context) {
     return Provider<GlobalBloc>.value(
@@ -137,29 +153,45 @@ class _HomePageState extends State<HomePage> {
         ),
         body: Padding(
           padding: const EdgeInsets.all(8.0),
-          child: Center(
-              child: Column(children: [
+          child: Column(children: [
             const SizedBox(
               height: 23,
             ),
-            Text(
-              "Live Healthy, ",
-              style: TextStyle(
-                  fontSize: 50,
-                  fontWeight: FontWeight.w700,
-                  color: Color.fromARGB(255, 52, 69, 165)),
+              Text(
+          "Live Healthy, ",
+          style: TextStyle(
+              fontSize: 50,
+              fontWeight: FontWeight.w700,
+              color: Color.fromARGB(255, 52, 69, 165)),
             ),
             Text(
-              "Worry Less! ",
-              style: TextStyle(
-                  fontSize: 40,
-                  fontWeight: FontWeight.w500,
-                  color: Color.fromARGB(255, 52, 69, 165)),
+          "Worry Less! ",
+          style: TextStyle(
+              fontSize: 40,
+              fontWeight: FontWeight.w500,
+              color: Color.fromARGB(255, 52, 69, 165)),
             ),
             Text(
-              "Welcome To MedSense.",
-              style: TextStyle(fontSize: 20, color: Colors.red[200]),
+          "Welcome To MedSense.",
+          style: TextStyle(fontSize: 20, color: Colors.red[200]),
             ),
+            
+            //This is where we try to change the ui for the
+            //Tabs to show information
+          /*  CarouselSlider.builder(
+              itemCount: urlImages.length,
+              options: CarouselOptions(
+                height: 200,
+                autoPlay: true,
+                autoPlayAnimationDuration: Duration(seconds: 2),
+
+              ),
+              itemBuilder: (context, index, realIndex) {
+                final urlImage = urlImages[index];
+                return buildImage(urlImage, index);
+              },
+            ),
+            */
             const SizedBox(
               height: 10,
             ),
@@ -182,7 +214,7 @@ class _HomePageState extends State<HomePage> {
             ),
             //Here there should be the grid containing the medication
             Flexible(child: BottomContainer()),
-          ])),
+          ]),
         ),
       ),
     );
