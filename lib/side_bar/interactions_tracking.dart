@@ -41,17 +41,18 @@ class _InteractionsPageState extends State<InteractionsPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      
       appBar: AppBar(
+        backgroundColor: Colors.grey[800],
         title: Text(
           'Medication Interactions Search',
           style: GoogleFonts.lato(
-            textStyle: const TextStyle(
-              color: Colors.black,
+            textStyle:  TextStyle(
+              color: Colors.green[400],
               fontSize: 20.0,
             ),
           ),
         ),
-        backgroundColor: Colors.white,
       ),
       body: Padding(
         padding: const EdgeInsets.all(16.0),
@@ -95,15 +96,16 @@ class _InteractionsPageState extends State<InteractionsPage> {
                 performSearch(query1, query2);
               },
               child: Text(
-                'Search Interactions',
+                'Search Interactions 🔍',
                 style: GoogleFonts.lato(
                   textStyle: const TextStyle(
                     color: Colors.white,
+                    fontWeight: FontWeight.bold
                   ),
                 ),
               ),
               style: ElevatedButton.styleFrom(
-                backgroundColor: Colors.blue,
+                backgroundColor: Colors.green[400],
               ),
             ),
             Expanded(

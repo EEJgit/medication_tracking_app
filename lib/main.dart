@@ -129,7 +129,7 @@ void main() async {
   //we schedule here
   cron.schedule(Schedule.parse('*/1 * * * *'), () async {
    print('every 1');
-    scheduleSMSSend();
+   // scheduleSMSSend();
    // await sendEmail();
   });
 

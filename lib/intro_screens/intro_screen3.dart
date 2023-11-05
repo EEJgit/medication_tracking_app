@@ -8,7 +8,7 @@ class IntroScreenThree extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
-      color: const Color.fromARGB(255, 52, 69, 165),
+      color: Colors.grey[800],
       child: Center(
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
@@ -16,8 +16,8 @@ class IntroScreenThree extends StatelessWidget {
             Text(
               "Stay Updated!",
               style: TextStyle(
-                color: Colors.white,
-                fontWeight: FontWeight.w500,
+                color: Colors.green[300],
+                fontWeight: FontWeight.w600,
                 fontSize: 20
               ),
             ),

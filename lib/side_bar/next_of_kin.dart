@@ -1,7 +1,9 @@
 // ignore_for_file: prefer_const_constructors, prefer_const_literals_to_create_immutables
 
+import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_alarm_clock/flutter_alarm_clock.dart';
+import 'package:medication_tracking_app/side_bar/contact_information.dart';
 
 class NextOfKin extends StatefulWidget {
   const NextOfKin({super.key});
@@ -11,207 +13,238 @@ class NextOfKin extends StatefulWidget {
 }
 
 class _NextOfKinState extends State<NextOfKin> {
-  final hourController = TextEditingController();
-  final minuteController = TextEditingController();
+  //this is the current user things
+  //firebase name collector and other variables
+  String firstName = "";
+  String lastName = '';
+  final FirebaseAuth _auth = FirebaseAuth.instance;
+  final FirebaseFirestore _firestore = FirebaseFirestore.instance;
+
+  void fetchUserData() async {
+    final user = _auth.currentUser;
+    if (user != null) {
+      final doc = await _firestore.collection('users').doc(user.email).get();
+      if (doc.exists) {
+        setState(() {
+          firstName = doc.get('first name');
+          lastName = doc.get('last name');
+        });
+      }
+    }
+  }
+
+  @override
+  void initState() {
+    super.initState();
+    fetchUserData();
+  }
+
+//%%%%%%%%%%%%%%%%%%%%%%FIREBASE CONNECTION AND EMERGENCY ADDITION%%%%%%
+  final nameController = TextEditingController();
+  final phoneController = TextEditingController();
+  final emailController = TextEditingController();
+  final locationController = TextEditingController();
+  final relationshipController = TextEditingController();
+  final sexController = TextEditingController();
+
+  //SAVE EMERGENCY CONTACT METHOD
+  void saveEmergencyContact() async {
+    final user = _auth.currentUser;
+    if (user != null) {
+      final contactData = {
+        'name': nameController.text,
+        'phone': phoneController.text,
+        'email': emailController.text,
+        'location': locationController.text,
+        'relationship': relationshipController.text,
+        'sex': sexController.text,
+      };
+
+      await _firestore
+          .collection('users')
+          .doc(user.email)
+          .collection('emergency')
+          .add(contactData);
+
+      // Clear the controllers after saving
+      nameController.clear();
+      phoneController.clear();
+      emailController.clear();
+      locationController.clear();
+      relationshipController.clear();
+      sexController.clear();
+    }
+  }
+
+//%%%%%%%%%%%%%%%%%%%ENDS HERE %%%%%%%%
   @override
   Widget build(BuildContext context) {
     return SafeArea(
       child: Scaffold(
-        appBar: AppBar(),
-        backgroundColor: Colors.grey[300],
-        body: Center(
-          child: Column(
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: [
-              SizedBox(height: 60),
-              //Input Hour
-              Row(
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: [
-                  Container(
-                    height: 40,
-                    width: 60,
-                    decoration: BoxDecoration(
-                        color: Colors.white,
-                        borderRadius: BorderRadius.circular(11)),
-                    child: Center(
-                      child: TextField(
-                        controller: hourController,
-                        keyboardType: TextInputType.number,
-                      ),
-                    ),
+        appBar: AppBar(
+          backgroundColor: Colors.grey[800],
+          title: Text(
+            "EMERGENCY CONTACTS",
+            style: TextStyle(color: Colors.white),
+          ),
+        ),
+        backgroundColor: Colors.grey[200],
+        body: SingleChildScrollView(
+          child: Padding(
+            padding: const EdgeInsets.all(8.0),
+            child: Column(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                SizedBox(height: 20),
+                //Input Hour
+                Padding(
+                  padding: const EdgeInsets.only(left: 8.0),
+                  child: Text(
+                    "${firstName}'s Emergency Contacts",
+                    style: TextStyle(
+                        color: Colors.grey[800],
+                        fontWeight: FontWeight.bold,
+                        fontSize: 19),
+                  ),
+                ),
+                SizedBox(
+                  height: 18,
+                ),
+                //%%%%%%%%%%THE INPUT FOR THE MEDICATION NEXT OF KIN CONTACT
+                // Input Fields for Emergency Contact
+                Column(mainAxisAlignment: MainAxisAlignment.center, children: [
+                  TextFormField(
+                    controller: nameController,
+                    decoration: InputDecoration(
+                        enabledBorder: OutlineInputBorder(
+                          borderSide: BorderSide(color: Colors.white),
+                        ),
+                        focusedBorder: OutlineInputBorder(
+                          borderSide: BorderSide(color: Colors.white),
+                        ),
+                        fillColor: Colors.white,
+                        hintText: "First Name",
+                        filled: true,
+                        hintStyle: TextStyle(color: Colors.red[500])),
                   ),
                   SizedBox(
-                    width: 8,
+                    height: 8,
                   ),
-                  //Input minute
-                  Text(
-                    ":",
-                    style: TextStyle(
-                      fontSize: 24,
-                      color: Colors.blue,
-                      fontWeight: FontWeight.bold,
-                    ),
+                  TextFormField(
+                    controller: phoneController,
+                    decoration: InputDecoration(
+                        enabledBorder: OutlineInputBorder(
+                          borderSide: BorderSide(color: Colors.white),
+                        ),
+                        focusedBorder: OutlineInputBorder(
+                          borderSide: BorderSide(color: Colors.white),
+                        ),
+                        fillColor: Colors.grey[100],
+                        hintText: "Phone Number",
+                        filled: true,
+                        hintStyle: TextStyle(color: Colors.grey[500])),
                   ),
                   SizedBox(
-                    width: 8,
+                    height: 8,
                   ),
-                  Container(
-                    height: 40,
-                    width: 60,
-                    decoration: BoxDecoration(
-                        shape: BoxShape.rectangle,
-                        color: Colors.white,
-                        borderRadius: BorderRadius.circular(11)),
-                    child: Center(
-                      child: TextField(
-                        controller: minuteController,
-                        keyboardType: TextInputType.number,
-                      ),
-                    ),
+                  TextFormField(
+                    controller: emailController,
+                    decoration: InputDecoration(
+                        enabledBorder: OutlineInputBorder(
+                          borderSide: BorderSide(color: Colors.white),
+                        ),
+                        focusedBorder: OutlineInputBorder(
+                          borderSide: BorderSide(color: Colors.white),
+                        ),
+                        fillColor: Colors.grey[100],
+                        hintText: "Email",
+                        filled: true,
+                        hintStyle: TextStyle(color: Colors.grey[500])),
                   ),
-                ],
-              ),
-              //Controllers end here
-
-              Container(
-                color: Colors.red,
-                margin: const EdgeInsets.all(25),
-                child: TextButton(
-                  child: const Text(
-                    'Create alarm',
-                    style: TextStyle(
-                      fontSize: 20.0,
-                      color: Colors.white,
-                    ),
+                  SizedBox(
+                    height: 8,
                   ),
+                  TextFormField(
+                    controller: locationController,
+                    decoration: InputDecoration(
+                        enabledBorder: OutlineInputBorder(
+                          borderSide: BorderSide(color: Colors.white),
+                        ),
+                        focusedBorder: OutlineInputBorder(
+                          borderSide: BorderSide(color: Colors.white),
+                        ),
+                        fillColor: Colors.grey[100],
+                        hintText: "Location",
+                        filled: true,
+                        hintStyle: TextStyle(color: Colors.grey[500])),
+                  ),
+                  SizedBox(
+                    height: 8,
+                  ),
+                  TextFormField(
+                    controller: relationshipController,
+                    decoration: InputDecoration(
+                        enabledBorder: OutlineInputBorder(
+                          borderSide: BorderSide(color: Colors.white),
+                        ),
+                        focusedBorder: OutlineInputBorder(
+                          borderSide: BorderSide(color: Colors.white),
+                        ),
+                        fillColor: Colors.grey[100],
+                        hintText: "Relationship",
+                        filled: true,
+                        hintStyle: TextStyle(color: Colors.grey[500])),
+                  ),
+                  SizedBox(
+                    height: 8,
+                  ),
+                  TextFormField(
+                    controller: sexController,
+                    decoration: InputDecoration(
+                        enabledBorder: OutlineInputBorder(
+                          borderSide: BorderSide(color: Colors.white),
+                        ),
+                        focusedBorder: OutlineInputBorder(
+                          borderSide: BorderSide(color: Colors.white),
+                        ),
+                        fillColor: Colors.grey[100],
+                        hintText: "Sex",
+                        filled: true,
+                        hintStyle: TextStyle(color: Colors.grey[500])),
+                  ),
+                ]),
+                SizedBox(
+                  height: 15,
+                ),
+                ElevatedButton(
                   onPressed: () {
-                    int hour;
-                    int minutes;
-                    hour = int.parse(hourController.text);
-                    minutes = int.parse(minuteController.text);
-
-                    // creating alarm after converting hour
-                    // and minute into integer
-                    FlutterAlarmClock.createAlarm(hour: hour, minutes: minutes);
+                    saveEmergencyContact;
+                    Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                          builder: (context) =>
+                              COntactInformation(), // Create an instance of the ContactInformation page
+                        ));
                   },
-                ),
-              ),
-              /*
-              ElevatedButton(
-                onPressed: () {
-                  // show alarm
-                  FlutterAlarmClock.showAlarms();
-                },
-                child: const Text(
-                  'Show Alarms',
-                  style: TextStyle(fontSize: 20.0),
-                ),
-              ),
-              Container(
-                child: TextButton(
-                    child: const Text(
-                      'Create timer',
-                      style: TextStyle(fontSize: 20.0),
+                  style: ElevatedButton.styleFrom(
+                    primary: Colors.green[700], // Background color
+                    onPrimary: Colors.white, // Text color
+                  ),
+                  child: Padding(
+                    padding: const EdgeInsets.only(
+                        left: 100.0, right: 100.0, top: 20, bottom: 20),
+                    child: Text(
+                      'Save Contact',
+                      style:
+                          TextStyle(fontWeight: FontWeight.bold, fontSize: 18),
                     ),
-                    onPressed: () {
-                      int minutes;
-                      minutes = int.parse(minuteController.text);
-
-                      // create timer
-                      FlutterAlarmClock.createTimer(length: minutes);
-                      showDialog(
-                          context: context,
-                          builder: (context) {
-                            return AboutDialog(
-                              children: [
-                                Center(
-                                  child: Text("Timer is set",
-                                      style: TextStyle(
-                                          fontSize: 20,
-                                          fontWeight: FontWeight.bold)),
-                                )
-                              ],
-                            );
-                          });
-                    }),
-              ),
-              ElevatedButton(
-                onPressed: () {
-                  // show timers
-                  FlutterAlarmClock.showTimers();
-                },
-                child: Text(
-                  "Show Timers",
-                  style: TextStyle(fontSize: 17),
+                  ),
                 ),
-              ),
-              */
-
-              
-            ],
+              ],
+            ),
           ),
         ),
       ),
     );
   }
 }
-
-/*Scaffold(
-      appBar: AppBar(
-        title: const Center(
-          child: Text(
-            "The Next of Kin Page",
-            style: TextStyle(color: Colors.white),
-          ),
-        ),
-      ),
-      body: Column(
-        children: [
-          Text(
-            "The Next of Kin.",
-            style: TextStyle(
-              color:Colors.grey[700]
-            ),
-          ),
-        ],
-      ),
-    );
-
-
-    ///This is the first Row
-    /// Row(
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: [
-              Container(
-                height: 40,
-                width: 60,
-                decoration: BoxDecoration(
-                    shape: BoxShape.rectangle,
-                    color: Colors.blue,
-                    borderRadius: BorderRadius.circular(11)),
-                child: Center(
-                  child: TextField(
-                    controller: hourController,
-                    keyboardType: TextInputType.number,
-                  ),
-                ),
-              ),
-              SizedBox(width: 20),
-              Container(
-                height: 40,
-                width: 60,
-                decoration: BoxDecoration(
-                    shape: BoxShape.rectangle,
-                    color: Colors.blue,
-                    borderRadius: BorderRadius.circular(11)),
-                child: Center(
-                  child: TextField(
-                    controller: minuteController,
-                    keyboardType: TextInputType.number,
-                  ),
-                ),
-              ),
-            ],
-          ),
-    */

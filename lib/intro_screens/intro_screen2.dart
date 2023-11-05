@@ -7,7 +7,7 @@ class IntroScreenTwo extends StatelessWidget {
   Widget build(BuildContext context) {
     return Container(
       height: 100,
-      color: const Color.fromARGB(255, 52, 69, 165),
+      color: Colors.grey[800],
       child: SafeArea(
         child: Center(
           child: Column(

@@ -1,9 +1,10 @@
 // ignore_for_file: prefer_const_constructors
 
 import 'package:flutter/material.dart';
+/*
 import 'package:flutter_map/flutter_map.dart';
 import 'package:latlong2/latlong.dart';
-
+*/
 class PharmacyMap extends StatefulWidget {
   const PharmacyMap({super.key});
 
@@ -14,7 +15,7 @@ class PharmacyMap extends StatefulWidget {
 class _PharmacyMapState extends State<PharmacyMap> {
   @override
   Widget build(BuildContext context) {
-    return FlutterMap(
+    /*return FlutterMap(
       options: MapOptions(
         initialCenter: LatLng(51.509364, -0.128928),
         initialZoom: 9.2,
@@ -34,7 +35,10 @@ class _PharmacyMapState extends State<PharmacyMap> {
           ],
         ),
       ],
+    )
+    */
+    return Column(
+      children: const [],
     );
-    ;
   }
 }

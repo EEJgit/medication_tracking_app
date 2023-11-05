@@ -6,15 +6,15 @@ class IntroScreenOne extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
-      color: const Color(0xFF3455A5), // Professional blue color
-      child: const Column(
+      color: Colors.grey[800], // Professional blue color
+      child:  Column(
         mainAxisAlignment: MainAxisAlignment.center,
         children: [
           SizedBox(height: 50),
           Icon(
             Icons.local_hospital, // Replace with a relevant medical icon
             size: 80,
-            color: Colors.white,
+            color: Colors.green[200],
           ),
           SizedBox(height: 20),
           Text(

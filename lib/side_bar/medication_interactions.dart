@@ -1,8 +1,11 @@
+// ignore_for_file: prefer_const_constructors, prefer_const_literals_to_create_immutables
+
 import 'dart:convert';
 
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
 import 'package:carousel_slider/carousel_slider.dart';
+import 'package:medication_tracking_app/pages/home_page.dart';
 
 class MedicationInteractionScreen extends StatefulWidget {
   const MedicationInteractionScreen({Key? key}) : super(key: key);
@@ -63,13 +66,55 @@ class _MedicationInteractionScreenState
     }
   }
 
+//#######################Bottom Navigation
+  int __selectedIndex = 0; //the bottom navigation index
+  void _navigateBottomBar(int index) {
+    setState(() {
+      __selectedIndex = index;
+    });
+  }
+
+  final List<Widget> pages = [
+    HomePage(),
+
+  ];
+
   @override
   Widget build(BuildContext context) {
     return SafeArea(
       child: Scaffold(
-        body: Column(
+        backgroundColor: Colors.grey[200],
+        bottomNavigationBar: BottomNavigationBar(
+            onTap: _navigateBottomBar,
+            currentIndex: __selectedIndex,
+            type: BottomNavigationBarType.fixed,
+            items: [
+              BottomNavigationBarItem(
+                backgroundColor:
+                    Colors.blue, // Change this to the desired color
+                icon: Icon(
+                  Icons.home,
+                  color: Colors.white,
+                ),
+                label: "Home",
+              ),
+              BottomNavigationBarItem(
+                icon: Icon(Icons.newspaper),
+                label: "News",
+              ),
+              BottomNavigationBarItem(
+                icon: Icon(Icons.home),
+                label: "Home",
+              ),
+              BottomNavigationBarItem(
+                icon: Icon(Icons.person),
+                label: "profile",
+              ),
+            ]),
+        body: 
+        Column(
           children: [
-            const SizedBox(height:19),
+            const SizedBox(height: 19),
             Center(
               child: _items.isEmpty
                   ? const CircularProgressIndicator() // Show a loading indicator until data is fetched
@@ -90,61 +135,67 @@ class _MedicationInteractionScreenState
 
                             return Container(
                               width: double.infinity,
-                              margin: const EdgeInsets.symmetric(horizontal: 5.0),
-                              child: Card(
-                                elevation: 5.0,
-                                shape: RoundedRectangleBorder(
-                                  borderRadius: BorderRadius.circular(10.0),
-                                ),
-                                color: Colors
-                                    .blue, // Set the background color to a modern color
-                                child: Padding(
-                                  padding: const EdgeInsets.all(16.0),
-                                  child: Column(
-                                    crossAxisAlignment: CrossAxisAlignment.start,
-                                    children: [
-                                      Text(
-                                        truncateText(
-                                          _items[index]['title'] ?? 'No title',
-                                          maxHeadlineLength,
-                                        ),
-                                        style: TextStyle(
-                                          fontWeight: FontWeight.bold,
-                                          fontSize:
-                                              calculateTextSize(containerWidth),
-                                        ),
-                                      ),
-                                      const SizedBox(height: 8),
-                                      Text(
-                                        truncateText(
-                                          _items[index]['description'] ?? '',
-                                          maxDescriptionLength,
-                                        ),
-                                        style: TextStyle(
-                                          fontSize:
-                                              calculateTextSize(containerWidth),
-                                        ),
-                                      ),
-                                      const SizedBox(height: 16),
-                                      Row(
-                                        children: [
-                                          const Icon(Icons.calendar_today),
-                                          const SizedBox(width: 4),
-                                          Text(
-                                            'Published: ${truncateText(_items[index]['publishedAt'] ?? 'N/A', maxPublishedAtLength)}',
+                              height: 400,
+                              margin:
+                                  const EdgeInsets.symmetric(horizontal: 5.0),
+                              child: SingleChildScrollView(
+                                child: Card(
+                                  elevation: 5.0,
+                                  shape: RoundedRectangleBorder(
+                                    borderRadius: BorderRadius.circular(10.0),
+                                  ),
+                                  color: Color.fromARGB(255, 26, 27,
+                                      27), // Set the background color to a modern color
+                                  child: Padding(
+                                    padding: const EdgeInsets.all(16.0),
+                                    child: Column(
+                                      crossAxisAlignment:
+                                          CrossAxisAlignment.start,
+                                      children: [
+                                        Text(
+                                          truncateText(
+                                            _items[index]['title'] ??
+                                                'No title',
+                                            maxHeadlineLength,
                                           ),
-                                        ],
-                                      ),
-                                      Row(
-                                        children: [
-                                          const Icon(Icons.person),
-                                          const SizedBox(width: 4),
-                                          Text(
-                                            'Author: ${truncateText(_items[index]['author'] ?? 'N/A', maxPublisherLength)}',
+                                          style: TextStyle(
+                                              fontWeight: FontWeight.bold,
+                                              fontSize: calculateTextSize(
+                                                  containerWidth),
+                                              color: Colors.green[400]),
+                                        ),
+                                        const SizedBox(height: 8),
+                                        Text(
+                                          truncateText(
+                                            _items[index]['description'] ?? '',
+                                            maxDescriptionLength,
                                           ),
-                                        ],
-                                      ),
-                                    ],
+                                          style: TextStyle(
+                                            fontSize: calculateTextSize(
+                                                containerWidth),
+                                          ),
+                                        ),
+                                        const SizedBox(height: 16),
+                                        Row(
+                                          children: [
+                                            const Icon(Icons.calendar_today),
+                                            const SizedBox(width: 4),
+                                            Text(
+                                              'Published: ${truncateText(_items[index]['publishedAt'] ?? 'N/A', maxPublishedAtLength)}',
+                                            ),
+                                          ],
+                                        ),
+                                        Row(
+                                          children: [
+                                            const Icon(Icons.person),
+                                            const SizedBox(width: 4),
+                                            Text(
+                                              'Author: ${truncateText(_items[index]['author'] ?? 'N/A', maxPublisherLength)}',
+                                            ),
+                                          ],
+                                        ),
+                                      ],
+                                    ),
                                   ),
                                 ),
                               ),
@@ -154,9 +205,23 @@ class _MedicationInteractionScreenState
                       },
                     ),
             ),
-            const Row(children: [
-              
-            ],)
+            SizedBox(
+              height: 15,
+            ),
+            Row(
+              children: [
+                Padding(
+                  padding: const EdgeInsets.all(8.0),
+                  child: Text(
+                    "Hello",
+                    style: TextStyle(
+                        color: Colors.green[400],
+                        fontSize: 20,
+                        fontWeight: FontWeight.bold),
+                  ),
+                )
+              ],
+            )
           ],
         ),
       ),

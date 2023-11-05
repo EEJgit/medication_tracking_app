@@ -1,4 +1,4 @@
-// ignore_for_file: prefer_const_constructors
+// ignore_for_file: prefer_const_constructors, prefer_const_literals_to_create_immutables
 
 import 'package:awesome_notifications/awesome_notifications.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
@@ -76,21 +76,20 @@ class _HomePageState extends State<HomePage> {
   }
 
 //WWWWWWWWWWWWWWCarousel images links
-  final urlImages = [
-    'Welcome To MadSense',
-    'OneE',
-    'Two'
-  ];
+  final urlImages = ['Welcome To MadSense', 'OneE', 'Two'];
 
   Widget buildImage(String urlImage, int index) => Container(
         margin: EdgeInsets.symmetric(horizontal: 12),
-        
         width: double.infinity,
         decoration: BoxDecoration(
           borderRadius: BorderRadius.circular(10),
           color: Colors.blue[800],
         ),
-        child: Center(child: Text(urlImage,style:TextStyle(fontSize: 30),)),
+        child: Center(
+            child: Text(
+          urlImage,
+          style: TextStyle(fontSize: 30),
+        )),
       );
 //Carousel implementation ends here
   @override
@@ -112,7 +111,7 @@ class _HomePageState extends State<HomePage> {
               width: 65,
               height: 65,
               child: Card(
-                color: Color.fromARGB(255, 52, 69, 165),
+                color: Colors.green[600],
                 shape: CircleBorder(),
                 child: Icon(
                   Icons.add,
@@ -122,7 +121,28 @@ class _HomePageState extends State<HomePage> {
         ),
         backgroundColor: Colors.grey[200],
         drawer: UserDrawer(),
+        bottomNavigationBar:
+            BottomNavigationBar(type: BottomNavigationBarType.fixed, items: [
+          BottomNavigationBarItem(
+            backgroundColor: Colors.white,
+            icon: Icon(Icons.home),
+            label: "Home",
+          ),
+          BottomNavigationBarItem(
+            icon: Icon(Icons.newspaper),
+            label: "News",
+          ),
+          BottomNavigationBarItem(
+            icon: Icon(Icons.home),
+            label: "Home",
+          ),
+          BottomNavigationBarItem(
+            icon: Icon(Icons.person),
+            label: "profile",
+          ),
+        ]),
         appBar: AppBar(
+          backgroundColor: Colors.grey[800],
           title: Row(
             children: [
               Text(
@@ -134,7 +154,7 @@ class _HomePageState extends State<HomePage> {
               Text(
                 "$firstName 👋",
                 style: TextStyle(
-                    color: Colors.red[600],
+                    color: Colors.green[600],
                     fontWeight: FontWeight.bold,
                     fontSize: 25),
               ),
@@ -145,7 +165,7 @@ class _HomePageState extends State<HomePage> {
               onPressed: signOut,
               icon: Icon(
                 Icons.logout,
-                color: Colors.pink,
+                color: Colors.green[600],
                 size: 30,
               ),
             ),
@@ -157,28 +177,31 @@ class _HomePageState extends State<HomePage> {
             const SizedBox(
               height: 23,
             ),
-              Text(
-          "Live Healthy, ",
-          style: TextStyle(
-              fontSize: 50,
-              fontWeight: FontWeight.w700,
-              color: Color.fromARGB(255, 52, 69, 165)),
+            Text(
+              "Live Healthy, ",
+              style: TextStyle(
+                  fontSize: 50,
+                  fontWeight: FontWeight.w700,
+                  color: Colors.green[600]),
             ),
             Text(
-          "Worry Less! ",
-          style: TextStyle(
-              fontSize: 40,
-              fontWeight: FontWeight.w500,
-              color: Color.fromARGB(255, 52, 69, 165)),
+              "Worry Less! ",
+              style: TextStyle(
+                  fontSize: 40,
+                  fontWeight: FontWeight.w500,
+                  color: Colors.green[600]),
             ),
             Text(
-          "Welcome To MedSense.",
-          style: TextStyle(fontSize: 20, color: Colors.red[200]),
+              "Welcome To MedSense.",
+              style: TextStyle(
+                fontSize: 20,
+                color: Colors.green[200],
+              ),
             ),
-            
+
             //This is where we try to change the ui for the
             //Tabs to show information
-          /*  CarouselSlider.builder(
+            /*  CarouselSlider.builder(
               itemCount: urlImages.length,
               options: CarouselOptions(
                 height: 200,
@@ -201,9 +224,9 @@ class _HomePageState extends State<HomePage> {
                 return Text(
                   !snapshot.hasData ? "0" : snapshot.data!.length.toString(),
                   style: TextStyle(
-                    fontSize: 25,
+                    fontSize: 27,
                     fontWeight: FontWeight.bold,
-                    color: Colors.blue[700],
+                    color: Colors.green[700],
                   ),
                 );
               },
@@ -355,7 +378,7 @@ class MedicineCard extends StatelessWidget {
         ),
         margin: EdgeInsets.all(22),
         decoration: BoxDecoration(
-            color: Colors.white, borderRadius: BorderRadius.circular(9.0)),
+            color: Colors.green[600], borderRadius: BorderRadius.circular(9.0)),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           mainAxisAlignment: MainAxisAlignment.center,

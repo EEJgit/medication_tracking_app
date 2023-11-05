@@ -88,7 +88,7 @@ class _UserDrawerState extends State<UserDrawer> {
   Widget build(BuildContext context) {
     return SafeArea(
       child: Drawer(
-        backgroundColor: Colors.white,
+        backgroundColor: Colors.grey[700],
         child: ListView(
           children: [
             UserAccountsDrawerHeader(
@@ -108,14 +108,14 @@ class _UserDrawerState extends State<UserDrawer> {
                     onPressed: moveToKinDetails,
                     icon: Icon(
                       Icons.watch,
-                      color: Colors.blue[900],
+                      color: Colors.green[400],
                       size: 30,
                     ),
                   ),
                   Text(
                     "Schedule Medication time",
                     style: TextStyle(
-                      color: Colors.blue[900],
+                      color: Colors.green[400],
                       fontSize: 18,
                       fontWeight: FontWeight.bold,
             
@@ -131,15 +131,15 @@ class _UserDrawerState extends State<UserDrawer> {
                   IconButton(
                     onPressed: interactionsPage,
                     icon: Icon(
-                      Icons.watch,
-                      color: Colors.blue[900],
+                      Icons.newspaper,
+                      color: Colors.white,
                       size: 30,
                     ),
                   ),
                   Text(
                     "Medication News",
                     style: TextStyle(
-                      color: Colors.blue[900],
+                      color: Colors.green[200],
                       fontSize: 18,
                       fontWeight: FontWeight.bold,
                     ),
@@ -155,15 +155,15 @@ class _UserDrawerState extends State<UserDrawer> {
                   IconButton(
                     onPressed: interactionsTracking,
                     icon: Icon(
-                      Icons.watch,
-                      color: Colors.blue[900],
+                      Icons.search,
+                      color: Colors.white,
                       size: 30,
                     ),
                   ),
                   Text(
                     "Interactions Search",
                     style: TextStyle(
-                      color: Colors.blue[900],
+                      color: Colors.green[200],
                       fontSize: 18,
                       fontWeight: FontWeight.bold,
                     ),
@@ -179,15 +179,15 @@ class _UserDrawerState extends State<UserDrawer> {
                   IconButton(
                     onPressed: pharmacyMap,
                     icon: Icon(
-                      Icons.watch,
-                      color: Colors.blue[900],
+                      Icons.map,
+                      color: Colors.white,
                       size: 30,
                     ),
                   ),
                   Text(
                     "Pharmacy Map",
                     style: TextStyle(
-                      color: Colors.blue[900],
+                      color: Colors.green[200],
                       fontSize: 18,
                       fontWeight: FontWeight.bold,
                     ),
