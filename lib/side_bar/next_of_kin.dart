@@ -3,6 +3,7 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:medication_tracking_app/pages/home_page.dart';
 import 'package:medication_tracking_app/side_bar/contact_information.dart';
 
 class NextOfKin extends StatefulWidget {
@@ -100,7 +101,7 @@ class _NextOfKinState extends State<NextOfKin> {
                 Padding(
                   padding: const EdgeInsets.only(left: 8.0),
                   child: Text(
-                    "${firstName}'s Emergency Contacts",
+                    "$firstName's Emergency Contacts",
                     style: TextStyle(
                         color: Colors.grey[800],
                         fontWeight: FontWeight.bold,
@@ -122,10 +123,10 @@ class _NextOfKinState extends State<NextOfKin> {
                         focusedBorder: OutlineInputBorder(
                           borderSide: BorderSide(color: Colors.white),
                         ),
-                        fillColor: Colors.white,
-                        hintText: "First Name",
+                        fillColor: Colors.grey[100],
+                        hintText: "Full Name",
                         filled: true,
-                        hintStyle: TextStyle(color: Colors.red[500])),
+                        hintStyle: TextStyle(color: Colors.grey[500])),
                   ),
                   SizedBox(
                     height: 8,
@@ -218,7 +219,7 @@ class _NextOfKinState extends State<NextOfKin> {
                 ),
                 ElevatedButton(
                   onPressed: () {
-                    saveEmergencyContact;
+                    saveEmergencyContact();
                     Navigator.push(
                         context,
                         MaterialPageRoute(
@@ -227,8 +228,8 @@ class _NextOfKinState extends State<NextOfKin> {
                         ));
                   },
                   style: ElevatedButton.styleFrom(
-                    primary: Colors.green[700], // Background color
-                    onPrimary: Colors.white, // Text color
+                    foregroundColor: Colors.white,
+                    backgroundColor: Colors.green[700], // Text color
                   ),
                   child: Padding(
                     padding: const EdgeInsets.only(

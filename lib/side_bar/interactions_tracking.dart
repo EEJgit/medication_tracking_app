@@ -41,13 +41,12 @@ class _InteractionsPageState extends State<InteractionsPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      
       appBar: AppBar(
         backgroundColor: Colors.grey[800],
         title: Text(
           'Medication Interactions Search',
           style: GoogleFonts.lato(
-            textStyle:  TextStyle(
+            textStyle: TextStyle(
               color: Colors.green[400],
               fontSize: 20.0,
             ),
@@ -58,8 +57,10 @@ class _InteractionsPageState extends State<InteractionsPage> {
         padding: const EdgeInsets.all(16.0),
         child: Column(
           children: [
-            Text("Do not rely on MedSense to make decisions regarding medical care. While we make every effort to ensure that data is accurate, you should assume all results are unvalidated",
-            style:TextStyle(color: Colors.red[600]) ,),
+            Text(
+              "Do not rely on MedSense to make decisions regarding medical care. While we make every effort to ensure that data is accurate, you should assume all results are unvalidated",
+              style: TextStyle(color: Colors.red[600]),
+            ),
             TextField(
               controller: query1Controller,
               decoration: InputDecoration(
@@ -88,7 +89,9 @@ class _InteractionsPageState extends State<InteractionsPage> {
                 ),
               ),
             ),
-            const SizedBox(height: 10,),
+            const SizedBox(
+              height: 10,
+            ),
             ElevatedButton(
               onPressed: () {
                 String query1 = query1Controller.text;
@@ -99,14 +102,15 @@ class _InteractionsPageState extends State<InteractionsPage> {
                 'Search Interactions 🔍',
                 style: GoogleFonts.lato(
                   textStyle: const TextStyle(
-                    color: Colors.white,
-                    fontWeight: FontWeight.bold
-                  ),
+                      color: Colors.white, fontWeight: FontWeight.bold),
                 ),
               ),
               style: ElevatedButton.styleFrom(
                 backgroundColor: Colors.green[400],
               ),
+            ),
+            const SizedBox(
+              height: 10,
             ),
             Expanded(
               child: ListView.builder(
@@ -116,10 +120,8 @@ class _InteractionsPageState extends State<InteractionsPage> {
                     title: Text(
                       searchResults[index]['title'],
                       style: GoogleFonts.lato(
-                        textStyle: const TextStyle(
-                          color: Colors.black,
-                          fontSize: 18
-                        ),
+                        textStyle:
+                            const TextStyle(color: Colors.black, fontSize: 18),
                       ),
                     ),
                     subtitle: Column(
@@ -137,8 +139,8 @@ class _InteractionsPageState extends State<InteractionsPage> {
                         Text(
                           searchResults[index]['link'],
                           style: GoogleFonts.lato(
-                            textStyle: const TextStyle(
-                              color: Colors.blue,
+                            textStyle:  TextStyle(
+                              color: Colors.green[400],
                             ),
                           ),
                         ),

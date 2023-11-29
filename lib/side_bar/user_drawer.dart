@@ -3,6 +3,7 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:medication_tracking_app/side_bar/contact_information.dart';
 import 'package:medication_tracking_app/side_bar/interactions_tracking.dart';
 import 'package:medication_tracking_app/side_bar/medication_interactions.dart';
 import 'package:medication_tracking_app/side_bar/next_of_kin.dart';
@@ -79,7 +80,7 @@ class _UserDrawerState extends State<UserDrawer> {
     Navigator.push(
       context,
       MaterialPageRoute(
-        builder: (context) => PharmacyMap(),
+        builder: (context) => COntactInformation(),
       ),
     );
     
@@ -107,15 +108,15 @@ class _UserDrawerState extends State<UserDrawer> {
                   IconButton(
                     onPressed: moveToKinDetails,
                     icon: Icon(
-                      Icons.watch,
-                      color: Colors.green[400],
+                      Icons.contact_emergency,
+                      color: Colors.white,
                       size: 30,
                     ),
                   ),
                   Text(
-                    "Schedule Medication time",
+                    "Add Emergency contact",
                     style: TextStyle(
-                      color: Colors.green[400],
+                      color: Colors.green[200],
                       fontSize: 18,
                       fontWeight: FontWeight.bold,
             
@@ -172,6 +173,7 @@ class _UserDrawerState extends State<UserDrawer> {
               ),
             ),
 
+
             GestureDetector(
               onTap: pharmacyMap,
               child: Row(
@@ -185,7 +187,7 @@ class _UserDrawerState extends State<UserDrawer> {
                     ),
                   ),
                   Text(
-                    "Pharmacy Map",
+                    "Emergency Contact info",
                     style: TextStyle(
                       color: Colors.green[200],
                       fontSize: 18,

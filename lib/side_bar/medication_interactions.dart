@@ -19,7 +19,8 @@ class _MedicationInteractionScreenState
     extends State<MedicationInteractionScreen> {
   List _items = [];
   final int maxTextLength = 150; // Define the maximum length of the text
-  final int maxHeadlineLength = 50; // Define the maximum length of the headline
+  final int maxHeadlineLength =
+      350; // Define the maximum length of the headline
   final int maxPublisherLength =
       20; // Define the maximum length of the publisher's name
   final int maxDescriptionLength =
@@ -76,7 +77,6 @@ class _MedicationInteractionScreenState
 
   final List<Widget> pages = [
     HomePage(),
-
   ];
 
   @override
@@ -84,37 +84,43 @@ class _MedicationInteractionScreenState
     return SafeArea(
       child: Scaffold(
         backgroundColor: Colors.grey[200],
-        bottomNavigationBar: BottomNavigationBar(
-            onTap: _navigateBottomBar,
-            currentIndex: __selectedIndex,
-            type: BottomNavigationBarType.fixed,
-            items: [
-              BottomNavigationBarItem(
-                backgroundColor:
-                    Colors.blue, // Change this to the desired color
-                icon: Icon(
-                  Icons.home,
-                  color: Colors.white,
-                ),
-                label: "Home",
-              ),
-              BottomNavigationBarItem(
-                icon: Icon(Icons.newspaper),
-                label: "News",
-              ),
-              BottomNavigationBarItem(
-                icon: Icon(Icons.home),
-                label: "Home",
-              ),
-              BottomNavigationBarItem(
-                icon: Icon(Icons.person),
-                label: "profile",
-              ),
-            ]),
-        body: 
-        Column(
+        body: Column(
           children: [
             const SizedBox(height: 19),
+            Row(
+              children: [
+                Center(
+                  child: Padding(
+                    padding: const EdgeInsets.all(18.0),
+                    child: Container(
+                        height: 300,
+                        width: 370,
+                        decoration: BoxDecoration(
+                          color: Colors.grey[900],
+                          borderRadius: BorderRadius.only(
+                            topLeft: Radius.circular(20.0),
+                            topRight: Radius.circular(20.0),
+                            bottomLeft: Radius.circular(20.0),
+                            bottomRight: Radius.circular(20.0),
+                          ),
+                        ),
+                        child: Center(child: Text("Stay Updated", style: TextStyle(fontSize: 28),))),
+                  ),
+                )
+                /*
+                Padding(
+                  padding: const EdgeInsets.all(8.0),
+                  child: Text(
+                    "Hello",
+                    style: TextStyle(
+                        color: Colors.green[400],
+                        fontSize: 20,
+                        fontWeight: FontWeight.bold),
+                  ),
+                )
+                */
+              ],
+            ),
             Center(
               child: _items.isEmpty
                   ? const CircularProgressIndicator() // Show a loading indicator until data is fetched
@@ -185,15 +191,6 @@ class _MedicationInteractionScreenState
                                             ),
                                           ],
                                         ),
-                                        Row(
-                                          children: [
-                                            const Icon(Icons.person),
-                                            const SizedBox(width: 4),
-                                            Text(
-                                              'Author: ${truncateText(_items[index]['author'] ?? 'N/A', maxPublisherLength)}',
-                                            ),
-                                          ],
-                                        ),
                                       ],
                                     ),
                                   ),
@@ -208,20 +205,6 @@ class _MedicationInteractionScreenState
             SizedBox(
               height: 15,
             ),
-            Row(
-              children: [
-                Padding(
-                  padding: const EdgeInsets.all(8.0),
-                  child: Text(
-                    "Hello",
-                    style: TextStyle(
-                        color: Colors.green[400],
-                        fontSize: 20,
-                        fontWeight: FontWeight.bold),
-                  ),
-                )
-              ],
-            )
           ],
         ),
       ),

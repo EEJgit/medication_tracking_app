@@ -56,7 +56,7 @@ class _LoginPageState extends State<LoginPage> {
       context: context,
       builder: (context) => const Center(
         child: CircularProgressIndicator(
-          valueColor: AlwaysStoppedAnimation<Color>(Colors.pink),
+          valueColor: AlwaysStoppedAnimation<Color>(Colors.green),
         ),
       ),
     );
@@ -120,7 +120,7 @@ class _LoginPageState extends State<LoginPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: Colors.grey[300],
+      backgroundColor: Colors.grey[800],
       body: SafeArea(
         child: SingleChildScrollView(
           child: Center(
@@ -128,14 +128,15 @@ class _LoginPageState extends State<LoginPage> {
               padding: const EdgeInsets.symmetric(horizontal: 25.0),
               child: Column(
                 mainAxisAlignment: MainAxisAlignment.center,
+                crossAxisAlignment: CrossAxisAlignment.center,
                 children: [
                   //Login Icon here on top
                   const SizedBox(
-                    height: 15,
+                    height: 85,
                   ),
                   Icon(
                     Icons.person,
-                    color: Colors.grey[800],
+                    color: Colors.green[300],
                     size: 150,
                   ),
                   const SizedBox(
@@ -146,13 +147,13 @@ class _LoginPageState extends State<LoginPage> {
                     "Welcome Back, you have been Missed!",
                     //Styles for the Welcome text.
                     style: TextStyle(
-                      color: Colors.grey[700],
+                      color: Colors.green[300],
                       fontWeight: FontWeight.bold,
                       fontSize: 18,
                     ),
                   ),
                   const SizedBox(
-                    height: 15,
+                    height: 25,
                   ),
                   //User email textField in put here to firebase
                   UserTextField(
@@ -191,10 +192,10 @@ class _LoginPageState extends State<LoginPage> {
                             ),
                           );
                         },
-                        child: const Text(
+                        child: Text(
                           "Forgot Password?",
                           style: TextStyle(
-                              fontWeight: FontWeight.w500, color: Colors.blue),
+                              fontWeight: FontWeight.w500, color: Colors.green[300]),
                         ),
                       ),
                     ],
@@ -214,11 +215,11 @@ class _LoginPageState extends State<LoginPage> {
                   Row(
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: [
-                      Text(
+                     const Text(
                         "Not a member?",
                         style: TextStyle(
                           fontWeight: FontWeight.bold,
-                          color: Colors.grey[700],
+                          color: Colors.white,
                         ),
                       ),
                       const SizedBox(
@@ -227,10 +228,10 @@ class _LoginPageState extends State<LoginPage> {
                       GestureDetector(
                         // This on tap enables the user to navigate betweeen the sign in and sign up pages.
                         onTap: widget.onTap,
-                        child: const Text(
+                        child:  Text(
                           "Register.",
                           style: TextStyle(
-                            color: Colors.blue,
+                            color: Colors.green[400],
                             fontWeight: FontWeight.bold,
                           ),
                         ),

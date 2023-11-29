@@ -70,6 +70,7 @@ class _NewEntryPageState extends State<NewEntryPage> {
         key: _scaffoldKey,
         resizeToAvoidBottomInset: false,
         appBar: AppBar(
+          backgroundColor: Colors.grey[800],
           title: const Text('Add New',
               style: TextStyle(
                 color: Colors.white,
@@ -81,10 +82,17 @@ class _NewEntryPageState extends State<NewEntryPage> {
             padding: const EdgeInsets.all(8),
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
+              mainAxisAlignment: MainAxisAlignment.center,
               children: [
-                SizedBox(
-                  height: 2,
-                ),
+
+               Center(
+                 child: Text("⚠️ Please Enter correct details to get correct results",
+                 style:TextStyle(
+                  color: Colors.red[400],
+                  fontWeight: FontWeight.bold,
+                 )),
+               ),
+               SizedBox(height: 10,),
                 //NextOfKin()
                 const PanelTitle(
                   title: 'Medicine Name',
@@ -182,7 +190,7 @@ class _NewEntryPageState extends State<NewEntryPage> {
                     height: 45,
                     child: TextButton(
                       style: TextButton.styleFrom(
-                        backgroundColor: const Color.fromARGB(255, 52, 69, 165),
+                        backgroundColor: Colors.green[400],
                       ),
                       child: const Center(
                         child: Text(
@@ -389,7 +397,7 @@ class _SelectTimeState extends State<SelectTime> {
                 if (states.contains(MaterialState.pressed)) {
                   return Colors.blueAccent.withOpacity(0.5);
                 }
-                return const Color.fromARGB(255, 52, 69, 165);
+                return Color.fromARGB(255, 42, 175, 49);
               },
             ),
           ),
@@ -437,12 +445,12 @@ class _IntervalSelectionState extends State<IntervalSelection> {
                   fontSize: 18,
                   fontWeight: FontWeight.w700)),
           DropdownButton(
-            iconEnabledColor: Color.fromARGB(255, 52, 69, 165),
+            iconEnabledColor: Colors.green[400],
             dropdownColor: kScaffoldColor,
             hint: _selected == 0
                 ? Text('Select Interval',
                     style: TextStyle(
-                        color: Color.fromARGB(255, 52, 69, 165),
+                        color: Colors.green[400],
                         fontWeight: FontWeight.w700))
                 : null,
             elevation: 4,
@@ -453,7 +461,7 @@ class _IntervalSelectionState extends State<IntervalSelection> {
                   value: value,
                   child: Text(value.toString(),
                       style: TextStyle(
-                          color: Color.fromARGB(255, 52, 69, 165),
+                          color: Colors.green[400],
                           fontWeight: FontWeight.w300)),
                 );
               },
@@ -470,10 +478,14 @@ class _IntervalSelectionState extends State<IntervalSelection> {
           Text(
             _selected == 1 ? " hour" : " hours",
             style: TextStyle(
-              color: Color.fromARGB(255, 52, 69, 165),
+              color: Colors.green[500],
+              fontSize: 16,
                 fontWeight: FontWeight.w600
             ),
           ),
+          SizedBox(
+            width: 3,
+          )
         ],
       ),
     );
@@ -509,7 +521,7 @@ class MedicineTypeColumn extends StatelessWidget {
             decoration: BoxDecoration(
                 borderRadius: BorderRadius.circular(18),
                 color: isSelected
-                    ? Color.fromARGB(255, 52, 69, 165)
+                    ? Colors.green[400]
                     : Colors.white),
             child: Center(
               child: Padding(
@@ -531,7 +543,7 @@ class MedicineTypeColumn extends StatelessWidget {
               height: 21,
               decoration: BoxDecoration(
                 color: isSelected
-                    ? Color.fromARGB(255, 52, 69, 165)
+                    ? Colors.green[400]
                     : Colors.white,
                 borderRadius: BorderRadius.circular(8),
               ),
@@ -540,8 +552,8 @@ class MedicineTypeColumn extends StatelessWidget {
                   name,
                   style: TextStyle(
                     color: isSelected
-                        ? Colors.grey[200]
-                        : Color.fromARGB(255, 52, 69, 165),
+                        ? Colors.white
+                        : Colors.green[400],
                     fontWeight: FontWeight.w700,
                   ),
                 ),
@@ -568,10 +580,10 @@ class PanelTitle extends StatelessWidget {
           children: <TextSpan>[
             TextSpan(
               text: title,
-              style: const TextStyle(
+              style: TextStyle(
                 fontSize: 18,
-                color: Color.fromARGB(255, 52, 69, 165),
-                fontWeight: FontWeight.w500,
+                color: Colors.green[400],
+                fontWeight: FontWeight.w800,
               ),
             ),
             TextSpan(

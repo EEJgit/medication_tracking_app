@@ -75,23 +75,6 @@ class _HomePageState extends State<HomePage> {
     _auth.signOut();
   }
 
-//WWWWWWWWWWWWWWCarousel images links
-  final urlImages = ['Welcome To MadSense', 'OneE', 'Two'];
-
-  Widget buildImage(String urlImage, int index) => Container(
-        margin: EdgeInsets.symmetric(horizontal: 12),
-        width: double.infinity,
-        decoration: BoxDecoration(
-          borderRadius: BorderRadius.circular(10),
-          color: Colors.blue[800],
-        ),
-        child: Center(
-            child: Text(
-          urlImage,
-          style: TextStyle(fontSize: 30),
-        )),
-      );
-//Carousel implementation ends here
   @override
   Widget build(BuildContext context) {
     return Provider<GlobalBloc>.value(
@@ -121,26 +104,7 @@ class _HomePageState extends State<HomePage> {
         ),
         backgroundColor: Colors.grey[200],
         drawer: UserDrawer(),
-        bottomNavigationBar:
-            BottomNavigationBar(type: BottomNavigationBarType.fixed, items: [
-          BottomNavigationBarItem(
-            backgroundColor: Colors.white,
-            icon: Icon(Icons.home),
-            label: "Home",
-          ),
-          BottomNavigationBarItem(
-            icon: Icon(Icons.newspaper),
-            label: "News",
-          ),
-          BottomNavigationBarItem(
-            icon: Icon(Icons.home),
-            label: "Home",
-          ),
-          BottomNavigationBarItem(
-            icon: Icon(Icons.person),
-            label: "profile",
-          ),
-        ]),
+        
         appBar: AppBar(
           backgroundColor: Colors.grey[800],
           title: Row(
@@ -199,22 +163,6 @@ class _HomePageState extends State<HomePage> {
               ),
             ),
 
-            //This is where we try to change the ui for the
-            //Tabs to show information
-            /*  CarouselSlider.builder(
-              itemCount: urlImages.length,
-              options: CarouselOptions(
-                height: 200,
-                autoPlay: true,
-                autoPlayAnimationDuration: Duration(seconds: 2),
-
-              ),
-              itemBuilder: (context, index, realIndex) {
-                final urlImage = urlImages[index];
-                return buildImage(urlImage, index);
-              },
-            ),
-            */
             const SizedBox(
               height: 10,
             ),
@@ -249,13 +197,6 @@ class BottomContainer extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    /*  return Center(
-      child: Text(
-        "No Medications",
-        style: TextStyle(fontSize: 30, color: Colors.red[400]),
-      ),
-    );
-    */
     final GlobalBloc globalBloc = Provider.of<GlobalBloc>(context);
     return StreamBuilder(
       stream: globalBloc.medicineList$,
@@ -346,10 +287,6 @@ class MedicineCard extends StatelessWidget {
       highlightColor: Colors.white,
       splashColor: Colors.red,
       onTap: () {
-        //go to the medication activity or screen.with an animation
-        /*Navigator.push(context,
-            MaterialPageRoute(builder: (context) => MedicationDetails()));
-        */
         Navigator.of(context).push(
           PageRouteBuilder<void>(
             pageBuilder: (BuildContext context, Animation<double> animation,
@@ -396,7 +333,7 @@ class MedicineCard extends StatelessWidget {
               child: Text(
                 medicine.medicineName!,
                 style: TextStyle(
-                    color: Color.fromARGB(255, 52, 69, 165),
+                    color: Colors.white,
                     fontSize: 20,
                     fontWeight: FontWeight.bold,
                     overflow: TextOverflow.fade,

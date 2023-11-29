@@ -11,6 +11,7 @@ class IntroScreenTwo extends StatelessWidget {
       child: SafeArea(
         child: Center(
           child: Column(
+            mainAxisAlignment: MainAxisAlignment.center,
             children: [
               const SizedBox(
                 height: 30,

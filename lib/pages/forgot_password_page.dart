@@ -51,7 +51,7 @@ class _ForgotPasswordPageState extends State<ForgotPasswordPage> {
           context: context,
           builder: (context) {
             return AlertDialog(
-              content: Text("Password reset email sent to $email."),
+              content: Text("Password reset email sent to $email.", style: TextStyle(color: Colors.green[200])),
             );
           },
         );
@@ -73,10 +73,8 @@ class _ForgotPasswordPageState extends State<ForgotPasswordPage> {
 
     ///
     return Scaffold(
-      backgroundColor: Colors.grey[400],
-      appBar: AppBar(
-        elevation: 0,
-      ),
+      backgroundColor: Colors.grey[800],
+      
       body: Padding(
         padding: const EdgeInsets.all(25.0),
         child: Column(
@@ -93,7 +91,7 @@ class _ForgotPasswordPageState extends State<ForgotPasswordPage> {
               child: Text(
                 "Please enter your email and we will send you a reset link!",
                 textAlign: TextAlign.center,
-                style: TextStyle(fontSize: 19),
+                style: TextStyle(fontSize: 19,),
               ),
             ),
             const SizedBox(

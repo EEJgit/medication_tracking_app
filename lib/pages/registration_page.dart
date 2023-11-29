@@ -116,7 +116,7 @@ class _RegistrationPageState extends State<RegistrationPage> {
     }
 
     return Scaffold(
-      backgroundColor: Colors.grey[300],
+      backgroundColor: Colors.grey[800],
       body: SafeArea(
         child: SingleChildScrollView(
           child: Center(
@@ -127,11 +127,11 @@ class _RegistrationPageState extends State<RegistrationPage> {
                 children: [
                   //Login Icon here on top
                   const SizedBox(
-                    height: 10,
+                    height: 30,
                   ),
                   Icon(
                     Icons.person,
-                    color: Colors.grey[800],
+                    color: Colors.grey[200],
                     size: 40,
                   ),
                   const SizedBox(
@@ -142,7 +142,7 @@ class _RegistrationPageState extends State<RegistrationPage> {
                     "Lets create an Account for you",
                     //Styles for the Welcome text.
                     style: TextStyle(
-                      color: Colors.grey[800],
+                      color: Colors.green[400],
                       fontWeight: FontWeight.bold,
                       fontSize: 20,
                     ),
@@ -214,16 +214,16 @@ class _RegistrationPageState extends State<RegistrationPage> {
                   ),
                   //Switch to the register here page if no account was found.
                   const SizedBox(
-                    height: 10,
+                    height: 15,
                   ),
                   Row(
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: [
-                      Text(
+                      const Text(
                         "Already Have an Account?",
                         style: TextStyle(
                           fontWeight: FontWeight.bold,
-                          color: Colors.grey[700],
+                          color: Colors.white,
                         ),
                       ),
                       const SizedBox(
@@ -232,10 +232,10 @@ class _RegistrationPageState extends State<RegistrationPage> {
                       GestureDetector(
                         //onTap method to switch between sigin and signup screens
                         onTap: widget.onTap,
-                        child: const Text(
+                        child:  Text(
                           "Sign In.",
                           style: TextStyle(
-                            color: Colors.blue,
+                            color: Colors.green[400],
                             fontWeight: FontWeight.bold,
                           ),
                         ),

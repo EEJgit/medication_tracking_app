@@ -59,10 +59,10 @@ class _MedicationDetailsState extends State<MedicationDetails> {
                 borderRadius: BorderRadius.only(
                     topLeft: Radius.circular(20.0),
                     bottomRight: Radius.circular(20.0))),
-            title: const Text(
+            title:  Text(
               "Delete this Reminder?",
               style: TextStyle(
-                color: Color.fromARGB(255, 52, 69, 165),
+                color: Colors.green[500]
               ),
             ),
             //the actions for the cancel and confirm deletion  button
@@ -71,10 +71,11 @@ class _MedicationDetailsState extends State<MedicationDetails> {
                 onPressed: () {
                   Navigator.of(context).pop();
                 },
-                child: const Text(
+                child:  Text(
                   "Cancel",
                   style: TextStyle(
-                    color: Color.fromARGB(255, 52, 69, 165),
+                    color: Colors.green[500],
+                    fontWeight: FontWeight.bold,
                     fontSize: 18,
                   ),
                 ),
@@ -89,7 +90,7 @@ class _MedicationDetailsState extends State<MedicationDetails> {
                       builder: (context) => const HomePage(),
                     ),
                   );
-                    //notification closer
+                  //notification closer
                   LocalNotifications.closeAll();
                 },
                 child: Text(
@@ -112,10 +113,11 @@ class _MedicationDetailsState extends State<MedicationDetails> {
     final GlobalBloc globalBloc = Provider.of<GlobalBloc>(context);
     return Scaffold(
       appBar: AppBar(
+        backgroundColor: Colors.grey[700],
         title: Text(
           "$firstName's Medication Details",
           style: TextStyle(
-            color: Colors.white,
+            color: Colors.green[200],
             fontWeight: FontWeight.w100,
           ),
         ),
@@ -142,17 +144,15 @@ class _MedicationDetailsState extends State<MedicationDetails> {
                   backgroundColor: MaterialStateProperty.resolveWith<Color>(
                     (Set<MaterialState> states) {
                       if (states.contains(MaterialState.pressed)) {
-                        return Colors.red;
+                        return Colors.green;
                       }
-                      return const Color.fromARGB(255, 226, 74, 74);
+                      return Color.fromARGB(255, 32, 179, 51);
                     },
                   ),
                 ),
                 onPressed: () {
                   //open the alert dialog for the deletion notice. plus the global bloc to delete and manage the medication states.
                   openAlertBox(context, globalBloc);
-
-                
                 },
                 child: const Text(
                   "D E L E T E",
@@ -302,7 +302,7 @@ class MedicationInfoTab extends StatelessWidget {
             Text(
               fieldTitle, //the name of the medication down here should be dynamic
               style: TextStyle(
-                fontSize: 16,
+                fontSize: 15,
                 color: Colors.grey[500],
               ),
             ),
@@ -314,7 +314,7 @@ class MedicationInfoTab extends StatelessWidget {
               style: TextStyle(
                 fontSize: 23,
                 fontWeight: FontWeight.bold,
-                color: Colors.grey[700],
+                color: Colors.green[700],
               ),
             ),
           ],
@@ -340,16 +340,16 @@ class ExtendedTabInfo extends StatelessWidget {
           Text(
             fieldTitle,
             style: TextStyle(
-                fontSize: 25,
+                fontSize: 20,
                 color: Colors.grey[700],
                 fontWeight: FontWeight.bold),
           ),
           Text(
             fieldInfo,
-            style: const TextStyle(
-                fontSize: 16,
+            style:  TextStyle(
+                fontSize: 22,
                 fontWeight: FontWeight.w600,
-                color: Color.fromARGB(255, 52, 69, 165)),
+                color: Colors.green[400],),
           ),
         ],
       ),

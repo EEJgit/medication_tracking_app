@@ -16,7 +16,7 @@ class UserButton extends StatelessWidget {
         padding: EdgeInsets.all(20),
         decoration: BoxDecoration(
           borderRadius: BorderRadius.circular(7),
-          color: Color.fromARGB(255, 52, 69, 165),
+          color: Colors.green[400],
         ),
         child: Center(
           child: Text(

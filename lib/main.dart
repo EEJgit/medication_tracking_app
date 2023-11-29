@@ -34,7 +34,7 @@ var kColorScheme =
 ///
 ///
 
-///This is the mail sending demo
+///This is the mail sending Method
 Future<void> sendEmail() async {
   //from the video
 
@@ -60,25 +60,7 @@ Future<void> sendEmail() async {
     print(e);
   }
 
-  /*
-  final smtpServer = gmail('engineermambwe@gmail.com',
-      'prodig'); // Replace with your email and app password
   
-  final message = mailer.Message()
-    ..from =
-        mailer.Address(email,"Mambwe") // Replace with your email
-    ..recipients
-        .add('mikeapple056@gmai') // Replace with the recipient's email
-    ..subject = 'Scheduled Email'
-    ..text = 'This is a scheduled email sent from Flutter.';
-
-  try {
-    final sendReport = await mailer.send(message, smtpServer);
-    print('Email sent: ${sendReport.toString()}');
-  } catch (e) {
-    print('Email sending failed: $e');
-  }
-  */
 }
 
 //We try using the telephony package again
@@ -130,7 +112,7 @@ void main() async {
   cron.schedule(Schedule.parse('*/1 * * * *'), () async {
    print('every 1');
    // scheduleSMSSend();
-   // await sendEmail();
+   await sendEmail();
   });
 
   ///cron ends here
@@ -174,18 +156,6 @@ class MyApp extends StatelessWidget {
       builder: (context, child) => MaterialApp(
         debugShowCheckedModeBanner: false,
         title: 'Flutter Demo',
-        /*theme: ThemeData().copyWith(
-          useMaterial3: true,
-          colorScheme: kColorScheme,
-          appBarTheme: const AppBarTheme().copyWith(
-            backgroundColor: kColorScheme.onPrimaryContainer,
-            foregroundColor: kColorScheme.onSecondary,
-          ),
-          cardTheme: const CardTheme().copyWith(
-            color: kColorScheme.onPrimaryContainer,
-            margin: const EdgeInsets.all(16),
-          ),
-        ),*/
         theme: ThemeData.dark().copyWith(
           primaryColor: kPrimaryColor,
           scaffoldBackgroundColor: kScaffoldColor,

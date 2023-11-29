@@ -10,14 +10,14 @@ class IntroScreenOne extends StatelessWidget {
       child:  Column(
         mainAxisAlignment: MainAxisAlignment.center,
         children: [
-          SizedBox(height: 50),
+          const SizedBox(height: 50),
           Icon(
             Icons.local_hospital, // Replace with a relevant medical icon
             size: 80,
             color: Colors.green[200],
           ),
-          SizedBox(height: 20),
-          Text(
+          const SizedBox(height: 20),
+          const Text(
             "Medication Tracker",
             style: TextStyle(
               fontSize: 28,
@@ -25,7 +25,7 @@ class IntroScreenOne extends StatelessWidget {
               color: Colors.white,
             ),
           ),
-          Padding(
+          const Padding(
             padding: EdgeInsets.symmetric(horizontal: 20.0),
             child: Text(
               "Never miss a dose. Stay on top of your medication schedule.",
