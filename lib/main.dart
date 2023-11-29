@@ -102,7 +102,7 @@ void main() async {
       .initNotification(); //call the firebaseNotificatiosn method from the firebase_api file
   //flutter notifications second try
   await LocalNotifications.init();
-  //aweesome Notifications
+  //aweesome Notificationsn
 
 //TODO:
 
