@@ -206,7 +206,7 @@ class BottomContainer extends StatelessWidget {
         } else if (snapshot.data!.isEmpty) {
           return Center(
             child: Text(
-              "No Medications",
+              "No Medication!",
               style: TextStyle(fontSize: 30, color: Colors.red[400]),
             ),
           );
